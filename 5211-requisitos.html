@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>KINTO — Requisitos · #5211 Plataforma de Inteligência e Precificação de Seminovos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root,:root[data-theme="light"]{--kinto-primary:#00708D;--kinto-primary-rgb:0,112,141;--kinto-primary-hover:#005A72;--kinto-primary-tint:#EBF4F6;--bg:#F7F9FA;--surface:#FFFFFF;--surface-2:#FBFCFD;--surface-3:#F0F3F5;--surface-inv:#1A2026;--border:#E5E7EA;--border-strong:#C8D0D5;--text:#2A333A;--text-2:#38434B;--meta:#7A8893;--on-primary:#FFFFFF;--info:#00708D;--info-bg:#EBF4F6;--info-fg:#00708D;--success:#2F8F5F;--success-bg:#E8F3EC;--success-fg:#1E6F45;--warning:#B5740F;--warning-bg:#FBF1DB;--warning-fg:#8C5A0B;--danger:#B6322D;--danger-bg:#FBE9E8;--danger-fg:#8E2622;--neutral:#59646D;--neutral-bg:#EEF1F3;--neutral-fg:#4A555E;--code-bg:#0F1419;--code-bg-2:#1A2026;--code-fg:#E6EAEC;--code-muted:#9CA8B0;--code-line:#3D4A55;--shadow-1:0 1px 2px rgba(20,30,40,.06),0 1px 1px rgba(20,30,40,.04);--shadow-2:0 4px 14px rgba(20,30,40,.08),0 1px 3px rgba(20,30,40,.05);--hdr-bg:rgba(255,255,255,.85);--hdr-border:#E5E7EA;}
+:root[data-theme="dark"]{--kinto-primary:#4AB5D0;--kinto-primary-rgb:74,181,208;--kinto-primary-hover:#6BC9DE;--kinto-primary-tint:#1A3A44;--bg:#0E1418;--surface:#1A2026;--surface-2:#232B33;--surface-3:#2D3942;--surface-inv:#0A0E11;--border:#2D3942;--border-strong:#3D4A55;--text:#E6EAEC;--text-2:#C8D2D7;--meta:#9CA8B0;--on-primary:#0E1418;--info:#4AB5D0;--info-bg:#1A3A44;--info-fg:#7AC9DE;--success:#5BC07F;--success-bg:#1F3328;--success-fg:#8ADBA4;--warning:#D89B43;--warning-bg:#3B2D17;--warning-fg:#F0B870;--danger:#E07570;--danger-bg:#3B1F1E;--danger-fg:#F0A09C;--neutral:#8A95A0;--neutral-bg:#232B33;--neutral-fg:#B8C2CC;--code-bg:#0A0E11;--code-bg-2:#141A20;--code-fg:#E6EAEC;--code-muted:#8A95A0;--code-line:#3D4A55;--shadow-1:0 1px 2px rgba(0,0,0,.4),0 1px 1px rgba(0,0,0,.3);--shadow-2:0 4px 14px rgba(0,0,0,.5),0 1px 3px rgba(0,0,0,.3);--hdr-bg:rgba(26,32,38,.85);--hdr-border:#2D3942;}
+:root{--font:"Inter","ToyotaType","Arial",sans-serif;--font-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;--r-xs:3px;--r-sm:5px;--r:8px;--r-md:10px;--r-lg:14px;--r-xl:20px;--r-pill:999px;--gap-xs:4px;--gap-sm:8px;--gap:16px;--gap-lg:24px;--gap-xl:40px;--gap-2xl:64px;--hdr-h:64px;--tabs-h:52px;}
+*,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0}
+body{font-family:var(--font);font-size:16px;line-height:1.55;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+a{color:var(--kinto-primary);text-decoration:none}a:hover{text-decoration:underline}
+*{scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}*::-webkit-scrollbar{width:10px;height:10px}*::-webkit-scrollbar-track{background:transparent}*::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:var(--r-pill);border:2px solid var(--bg)}*::-webkit-scrollbar-thumb:hover{background:var(--meta)}
+.hdr{position:sticky;top:0;z-index:50;height:var(--hdr-h);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--gap-lg);padding:0 var(--gap-lg);background:var(--hdr-bg);backdrop-filter:saturate(160%) blur(12px);-webkit-backdrop-filter:saturate(160%) blur(12px);border-bottom:1px solid var(--hdr-border)}
+.hdr-brand{display:flex;align-items:center;gap:14px}
+.hdr-brand .logo img{height:30px;width:auto;display:block}
+.hdr-brand .logo .logo-dark{display:none}
+:root[data-theme="dark"] .hdr-brand .logo .logo-light{display:none}
+:root[data-theme="dark"] .hdr-brand .logo .logo-dark{display:block}
+.hdr-brand .div{width:1px;height:24px;background:var(--border)}.hdr-brand .doc-meta{display:flex;flex-direction:column;line-height:1.2}.hdr-brand .doc-meta b{font-size:14px;color:var(--text);font-weight:600}.hdr-brand .doc-meta small{font-size:11.5px;color:var(--meta);text-transform:uppercase;letter-spacing:.08em}
+.hdr-center{display:flex;justify-content:center;gap:8px}.hdr-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--info-bg);color:var(--info-fg);border-radius:var(--r-pill);font-size:12.5px;font-weight:600;border:1px solid var(--border);font-family:var(--font-mono)}
+.hdr-tag.warn{background:var(--warning-bg);color:var(--warning-fg)}.hdr-tag.warn::before{content:"";width:7px;height:7px;border-radius:var(--r-pill);background:var(--warning)}
+.hdr-tag.danger{background:var(--danger-bg);color:var(--danger-fg)}.hdr-tag.danger::before{content:"";width:7px;height:7px;border-radius:var(--r-pill);background:var(--danger);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hdr-actions{display:flex;gap:8px;align-items:center}
+.theme-toggle{display:inline-grid;grid-template-columns:1fr 1fr;background:var(--surface-3);border:1px solid var(--border);border-radius:var(--r-pill);padding:3px}
+.theme-toggle button{background:transparent;border:0;cursor:pointer;padding:5px 10px;border-radius:var(--r-pill);color:var(--meta);font-size:13px;display:inline-flex;align-items:center;gap:4px;transition:all .2s}
+:root[data-theme="light"] .theme-toggle button[data-set="light"],:root[data-theme="dark"] .theme-toggle button[data-set="dark"]{background:var(--surface);color:var(--kinto-primary);box-shadow:var(--shadow-1);font-weight:600}
+.theme-toggle button svg{width:14px;height:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:var(--font);font-size:13px;font-weight:600;padding:8px 14px;border-radius:var(--r);cursor:pointer;border:1px solid transparent;transition:all .15s;text-decoration:none}
+.btn svg{width:14px;height:14px}.btn-primary{background:var(--kinto-primary);color:var(--on-primary)}.btn-primary:hover{background:var(--kinto-primary-hover);text-decoration:none}
+.tabs-nav{position:sticky;top:var(--hdr-h);z-index:40;height:var(--tabs-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:end;padding:0 var(--gap-lg);overflow-x:auto;scrollbar-width:none}
+.tabs-nav::-webkit-scrollbar{display:none}
+.tabs-nav button{background:transparent;border:0;cursor:pointer;padding:14px 18px;font-size:13.5px;font-weight:600;color:var(--meta);font-family:var(--font);border-bottom:2px solid transparent;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;transition:all .15s;margin-bottom:-1px}
+.tabs-nav button:hover{color:var(--text)}.tabs-nav button.active{color:var(--kinto-primary);border-bottom-color:var(--kinto-primary)}
+.tabs-nav .tab-badge{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;background:var(--info-bg);color:var(--info-fg);border-radius:var(--r-pill);font-size:10.5px;font-weight:700}
+.tabs-nav button.active .tab-badge{background:var(--kinto-primary);color:var(--on-primary)}
+.tabs-nav .tab-badge.danger{background:var(--danger-bg);color:var(--danger-fg)}.tabs-nav button.active .tab-badge.danger{background:var(--danger);color:#fff}
+.tabs-nav .tab-badge.warn{background:var(--warning-bg);color:var(--warning-fg)}.tabs-nav button.active .tab-badge.warn{background:var(--warning);color:#fff}
+.page{padding:var(--gap-xl) var(--gap-xl);max-width:1320px;margin:0 auto}.tab-panel{display:none;animation:fadeIn .35s ease}.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--gap);margin-bottom:var(--gap-lg)}
+.panel-head h2{font-size:24px;font-weight:700;color:var(--text);margin:0 0 4px}.panel-head .sub{color:var(--meta);font-size:14px;margin:0;width:100%}
+.eyebrow{display:inline-block;color:var(--kinto-primary);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--gap);margin-bottom:var(--gap-lg)}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--gap-lg);box-shadow:var(--shadow-1);position:relative;overflow:hidden}
+.stat-label{font-size:11.5px;color:var(--meta);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:6px}
+.stat-value{font-size:28px;font-weight:700;color:var(--text);line-height:1.05;font-variant-numeric:tabular-nums;font-family:var(--font-mono)}
+.stat-value small{font-size:13px;color:var(--meta);font-weight:500;margin-left:4px;font-family:var(--font)}
+.stat-foot{font-size:11.5px;color:var(--meta);margin-top:6px}.stat-foot b{color:var(--text)}
+.stat-icon{position:absolute;top:var(--gap);right:var(--gap);opacity:.15;font-size:32px;color:var(--kinto-primary);line-height:1}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--gap-lg);box-shadow:var(--shadow-1);margin-bottom:var(--gap-lg)}
+.card-head{display:flex;justify-content:space-between;align-items:start;gap:var(--gap);margin-bottom:var(--gap)}
+.card-head h3{margin:0;font-size:16px;font-weight:600;color:var(--text)}.card-head .sub{margin:2px 0 0;font-size:12.5px;color:var(--meta)}
+.card-head .tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:var(--r-pill);background:var(--info-bg);color:var(--info-fg)}
+.row{display:grid;gap:var(--gap);margin-bottom:var(--gap-lg)}.row-2{grid-template-columns:repeat(2,1fr)}.row-3{grid-template-columns:repeat(3,1fr)}.row-2-1{grid-template-columns:2fr 1fr}.row-1-2{grid-template-columns:1fr 2fr}
+@media(max-width:980px){.row-2,.row-3,.row-2-1,.row-1-2{grid-template-columns:1fr}}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;border-radius:var(--r-sm);background:var(--neutral-bg);color:var(--neutral-fg);line-height:1.5}
+.badge--info{background:var(--info-bg);color:var(--info-fg)}.badge--success{background:var(--success-bg);color:var(--success-fg)}
+.badge--warning{background:var(--warning-bg);color:var(--warning-fg)}.badge--danger{background:var(--danger-bg);color:var(--danger-fg)}
+.badge--neutral{background:var(--neutral-bg);color:var(--neutral-fg)}
+.badge--solid{background:var(--kinto-primary);color:var(--on-primary)}.badge--dot::before{content:"";width:6px;height:6px;border-radius:var(--r-pill);background:currentColor}
+code{font-family:var(--font-mono);font-size:.9em;background:var(--info-bg);color:var(--kinto-primary-hover);padding:2px 7px;border-radius:var(--r-xs);border:1px solid var(--border)}
+:root[data-theme="dark"] code{color:var(--info-fg)}
+.code-block{margin:var(--gap) 0;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;box-shadow:var(--shadow-1)}
+.code-head{display:flex;align-items:center;justify-content:space-between;padding:10px var(--gap);background:var(--code-bg-2);color:var(--code-muted);font-family:var(--font-mono);font-size:12px;border-bottom:1px solid var(--surface-inv)}
+.code-head .file{display:flex;align-items:center;gap:8px;color:#C8D2D7}.code-head .file::before{content:"";width:8px;height:8px;border-radius:var(--r-pill);background:#7AC1D6}
+.code-head .lang{text-transform:uppercase;letter-spacing:.1em;color:#7AC1D6;font-weight:600;font-size:11px}
+.code-head .copy{background:transparent;border:1px solid #2D3942;color:var(--code-muted);font-family:var(--font-mono);font-size:11px;padding:5px 12px;cursor:pointer;text-transform:uppercase;letter-spacing:.1em;border-radius:var(--r);transition:all .15s}
+.code-head .copy:hover{color:#fff;border-color:#4A5A66;background:rgba(255,255,255,.04)}
+.code-lines{background:var(--code-bg);color:var(--code-fg);font-family:var(--font-mono);font-size:12.5px;line-height:1.7;overflow:auto;margin:0;padding:14px 18px}
+.code-lines pre{margin:0;white-space:pre-wrap;word-break:break-word}
+.tok-k{color:#FF7A93}.tok-s{color:#A8E0A4}.tok-n{color:#7AC1D6}.tok-c{color:#6B7E8A;font-style:italic}.tok-fn{color:#E8C56B}.tok-d{color:#C8D2D7}
+.callout{display:grid;grid-template-columns:32px 1fr;gap:14px;padding:14px var(--gap-lg);border:1px solid var(--border);border-left:3px solid var(--info);background:var(--info-bg);border-radius:var(--r-md);margin:var(--gap) 0;box-shadow:var(--shadow-1)}
+.callout .ico{width:26px;height:26px;border-radius:var(--r-pill);background:var(--info);color:var(--on-primary);display:grid;place-items:center;font-weight:700;font-size:13px}
+.callout b{display:block;color:var(--text);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.callout p{margin:0;color:var(--text-2);font-size:14px;line-height:1.5}
+.callout--success{border-left-color:var(--success);background:var(--success-bg)}.callout--success .ico{background:var(--success)}
+.callout--warning{border-left-color:var(--warning);background:var(--warning-bg)}.callout--warning .ico{background:var(--warning)}
+.callout--danger{border-left-color:var(--danger);background:var(--danger-bg)}.callout--danger .ico{background:var(--danger)}
+.callout p b,.callout p strong{display:inline;text-transform:none;letter-spacing:0;font-weight:700;color:var(--text)}
+.t-wrap{overflow:auto;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface);margin:var(--gap) 0}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+table.t thead th{background:var(--surface-3);color:var(--text);text-align:left;padding:10px 14px;font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border)}
+table.t tbody td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+table.t tbody tr:last-child td{border-bottom:0}table.t tbody tr:hover{background:var(--info-bg)}
+table.t .num{font-family:var(--font-mono);text-align:right;font-size:13px}.t .mono{font-family:var(--font-mono);font-size:13px}
+tr.row-bad td{background:var(--danger-bg)!important}tr.row-good td{background:var(--success-bg)!important}
+.arch{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--gap-lg);overflow-x:auto;margin:var(--gap) 0}
+.flow{display:flex;align-items:center;gap:10px;min-width:720px;font-family:var(--font);flex-wrap:nowrap}
+.flow-node{background:var(--surface);border:1.5px solid var(--border-strong);border-radius:var(--r-md);padding:12px 14px;text-align:center;box-shadow:var(--shadow-1);min-width:150px}
+.flow-node .label{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--meta);font-weight:600}
+.flow-node .name{font-size:13px;font-weight:700;color:var(--text);margin-top:3px}
+.flow-node .stack{font-size:10.5px;color:var(--meta);font-family:var(--font-mono);margin-top:3px}
+.flow-node.primary{border-color:var(--kinto-primary);background:var(--info-bg)}.flow-node.primary .name{color:var(--kinto-primary)}
+.flow-node.bad{border-color:var(--danger);background:var(--danger-bg)}
+.flow-arrow{color:var(--border-strong);font-size:20px;font-weight:700;flex-shrink:0}
+.fm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;margin:0}
+@media(max-width:760px){.fm-grid{grid-template-columns:1fr}}
+.fm-grid > div{display:grid;grid-template-columns:160px 1fr;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);background:var(--surface)}
+.fm-grid > div:nth-child(odd){border-right:1px solid var(--border)}
+.fm-grid dt{margin:0;font-size:11.5px;color:var(--meta);text-transform:uppercase;letter-spacing:.05em;font-weight:600;align-self:center}
+.fm-grid dd{margin:0;font-size:13.5px;color:var(--text);font-weight:500}
+.fm-wide{grid-column:1 / -1!important;border-right:0!important}
+.insight{background:linear-gradient(135deg,rgba(var(--kinto-primary-rgb),.05),rgba(var(--kinto-primary-rgb),0));border:1px solid var(--border);border-left:3px solid var(--kinto-primary);border-radius:var(--r-md);padding:var(--gap-lg);margin:var(--gap) 0}
+.insight h4{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--kinto-primary);font-weight:700}
+.insight p{margin:0;color:var(--text-2);font-size:14.5px;line-height:1.6;width:100%}
+.finding{border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface);overflow:hidden;margin-bottom:var(--gap);box-shadow:var(--shadow-1)}
+.finding-head{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px var(--gap-lg);background:var(--surface-2);border-bottom:1px solid var(--border)}
+.finding-id{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--on-primary);background:var(--danger);padding:4px 11px;border-radius:var(--r-sm)}
+.finding-id.b{background:var(--warning)}
+.finding-title{display:flex;flex-direction:column;line-height:1.3}.finding-title b{font-size:14.5px;color:var(--text);font-weight:600}
+.finding-title .loc{font-family:var(--font-mono);font-size:11.5px;color:var(--meta);margin-top:2px}
+.finding-body{padding:var(--gap) var(--gap-lg) var(--gap-lg)}.finding-body > p{margin:8px 0;font-size:14px;color:var(--text-2);line-height:1.55;width:100%}
+.finding-rec{margin-top:var(--gap);padding:12px var(--gap);background:var(--success-bg);border-left:3px solid var(--success);border-radius:0 var(--r) var(--r) 0;color:var(--text)}
+.finding-rec b{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--success-fg);margin-bottom:4px;font-weight:700}
+.finding-rec p{margin:0;font-size:13.5px;color:var(--text-2);line-height:1.5}
+.roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);margin:var(--gap-lg) 0}
+@media(max-width:980px){.roadmap{grid-template-columns:1fr}}
+.roadmap-col{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--gap-lg);box-shadow:var(--shadow-1)}
+.roadmap-col.now{border-top:3px solid var(--success)}.roadmap-col.next{border-top:3px solid var(--kinto-primary)}.roadmap-col.later{border-top:3px solid var(--meta)}
+.roadmap-col h4{margin:0 0 12px;display:flex;align-items:center;justify-content:space-between;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--text);font-weight:700}
+.roadmap-col h4 .when{font-size:11px;color:var(--meta);font-family:var(--font-mono);letter-spacing:0;text-transform:none;font-weight:500}
+.roadmap-col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.roadmap-col li{font-size:13px;color:var(--text-2);padding-left:18px;position:relative;line-height:1.45}
+.roadmap-col li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:var(--r-pill);background:var(--meta)}
+.roadmap-col.now li::before{background:var(--success)}.roadmap-col.next li::before{background:var(--kinto-primary)}.roadmap-col li b{color:var(--text)}
+.qa{display:flex;flex-direction:column;gap:10px;margin:var(--gap) 0}
+.qa-item{display:grid;grid-template-columns:26px 1fr;gap:12px;align-items:start;padding:14px var(--gap);background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--warning);border-radius:var(--r);box-shadow:var(--shadow-1)}
+.qa-item .q{width:22px;height:22px;border-radius:var(--r-pill);background:var(--warning-bg);color:var(--warning-fg);display:grid;place-items:center;font-weight:700;font-size:12px;font-family:var(--font-mono);margin-top:1px}
+.qa-item p{margin:0;font-size:13.5px;color:var(--text-2);line-height:1.5}.qa-item p b{color:var(--text)}
+.divider{display:flex;align-items:center;gap:var(--gap);margin:var(--gap-xl) 0 var(--gap)}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--border)}
+.divider span{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--meta);font-weight:600}
+.ftr{background:var(--surface);border-top:1px solid var(--border);padding:var(--gap-lg) var(--gap-xl);margin-top:var(--gap-2xl)}
+.ftr-signature{display:grid;grid-template-columns:auto 1fr auto;gap:var(--gap-lg);align-items:center;max-width:1320px;margin:0 auto;padding-bottom:var(--gap-lg)}
+.ftr-signature .sig-label{text-align:left;line-height:1.4}
+.ftr-signature .sig-label img{height:26px;display:block;margin-bottom:10px}
+.ftr-signature .sig-label .logo-dark{display:none}
+:root[data-theme="dark"] .ftr-signature .sig-label .logo-light{display:none}
+:root[data-theme="dark"] .ftr-signature .sig-label .logo-dark{display:block}
+.ftr-signature .sig-label small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--meta);font-weight:600;margin-bottom:6px}
+.ftr-signature .sig-label .seal{display:inline-block;font-family:var(--font-mono);font-size:10.5px;color:var(--kinto-primary);background:var(--info-bg);padding:3px 10px;border-radius:var(--r-pill);border:1px solid var(--border)}
+.ftr-signature .sig-author{display:flex;align-items:center;gap:14px;justify-content:center}
+.ftr-signature .sig-author .avatar{width:48px;height:48px;border-radius:var(--r-pill);background:var(--kinto-primary);color:var(--on-primary);display:grid;place-items:center;font-weight:700;font-size:16px;box-shadow:var(--shadow-1)}
+.ftr-signature .sig-info b{display:block;color:var(--text);font-size:16px;font-weight:700;line-height:1.2}
+.ftr-signature .sig-info span{display:block;font-size:13px;color:var(--meta);line-height:1.4;margin-top:2px}
+.ftr-signature .sig-contact{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-size:12px;color:var(--meta);font-family:var(--font-mono);text-align:right}
+.ftr-signature .sig-contact a{color:var(--kinto-primary)}
+@media(max-width:760px){.ftr-signature{grid-template-columns:1fr;text-align:center}.ftr-signature .sig-label,.ftr-signature .sig-contact{text-align:center;align-items:center}.ftr-signature .sig-author{justify-content:center}}
+.ftr-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--gap);max-width:1320px;margin:var(--gap-lg) auto 0;padding-top:var(--gap);border-top:1px solid var(--border);font-size:12px;color:var(--meta)}
+.ftr-bottom .confidencial{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:var(--r-pill);background:var(--warning-bg);color:var(--warning-fg);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(40px);background:var(--text);color:var(--surface);padding:12px 20px;font-size:13px;opacity:0;transition:.2s;pointer-events:none;z-index:99;border-radius:var(--r);box-shadow:var(--shadow-2)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+:root.theme-switching * { transition: none !important; }
+@media print{.hdr,.tabs-nav{position:static}.tab-panel{display:block !important;page-break-after:always}.theme-toggle,.hdr-actions .btn{display:none}}
+/* responsive-hdr */
+@media(max-width:1024px){.hdr-center{display:none}.hdr{gap:var(--gap)}}
+@media(max-width:600px){.hdr{padding:0 var(--gap)}.hdr-brand .doc-meta small{font-size:10.5px;letter-spacing:.04em}.hdr-brand .doc-meta b{font-size:13px}.tabs-nav{padding:0 var(--gap)}.tabs-nav button{padding:12px 12px;font-size:12.5px}.page{padding:var(--gap-lg) var(--gap)}.panel-head h2{font-size:20px}}
+/* INLINE-BOLD-FIX */.callout p b,.callout p strong,.finding-rec p b,.finding-rec p strong,.finding-body p b,.finding-body p strong,.gloss p b,.gloss p strong{display:inline;text-transform:none;letter-spacing:0;font-weight:700;color:var(--text)}
+</style>
+</head>
+<body>
+
+<!-- ====== HEADER ====== -->
+<header class="hdr">
+  <div class="hdr-brand">
+    <span class="logo"><img class="logo-light" src="data:image/png;base64,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" alt="KINTO"><img class="logo-dark" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGsAAABICAYAAADxhwuUAAAMZUlEQVR42u1ae4xdRRn/Zs45t7vbAu0+2u1iaW2AChYkugkUFaigEDGo0ZtKgsSA0ahoCTExgNrbhMQY/yBE/9BoJKT46G7BuNYtr1LQUqqUR9K7FNjuo7vb23vv2b17X+c5c+bzj53Znl7u7t7dUsBkfsnJbu6Z880332u+75sB0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0PiQgnxQEyOiEZs/IoSgVseH0EAQkdRRHtWimR/m++xNhFKKhBCYmprakkgkPgUA0yMjI/2EkGlEJNrDPkAgIkVE48iRI5byKM/zdmEMYRiO2HaxW3vYB4ixsbHm2t88z/tHFEXTXhDc7brujznnOUTEIAxHjh07dh4i1g2TGg2EQUSkvb29BAAgmUwiIUTMFeIAgPT29pJkMkkAAEdHR9fnJyfvakokBik1Wy3LuItS6oyPj9/a1tb20fHx8T+1t7cPdHR07E1Y1obOzs4vEEKeOHDggAkAXNHt7e2d9bZkMokAgAuFy56eHmM+nmvpLgbzyaGeTGIPAIDiX3xgoW6ud7Ztd1cqlV84jvO7arV690tvvLE6ZOwYImIYhMdPnDj5+SiKBCJGlUrlh5KeeTZzviujIeSc7L/zvVtoDXKM8Z54ltrsT5w40d3U1JQQQnDLsqrt7e1vxt8jIiWEiP7+/mVbtmy5PIoiCxEjADgvDMP/dnR0HAGAI4pusVi83TLNjwFAQA26prOz/feUUgEARhAE/wEA6O3tRUX/nXfe6Vi1atVmAKhyziki8oMHD75JCPHmSkjS6XSitbX1SkISBgCrrl27dqB2XYODgxe3tbWt9X3fJyRBABgAWHIUqyMRCwAYWJZFhBAFQsjgXEYkvYYnk0njkUce2dTUtHyjQaAdKESMsVy5XH6bEHICACKl9LNKrJTljmcyXw+CgCMiRlGEFcfZe+jQoea49YyOZi4PwzCtxiAilkqlx0dGRpoQ0ZRPAhHNXC53lRBC5RZc/eM4zq74vJI+PX78+Opyufx0PCEJguCtbDZ7Ra2Hqf+Hh4fXe54nEBE55zg9PX2vqu127NhBEZGMjY1tdl13BJcAxjkrFovfidWL8doR+vv7zy8Wyw8EQTDAOefv+p4xx3XdA/l8ftt7VrooAo7jPI+IAhFDRMRMJn+9soiRTOayMGQnJR++FPxjKvzEw4WiVywWf8AYK0vGq9Vq9TfpdDohM0dSu/jxbPYaOT+TDwZB8E46nV6BiIb6RtEfGBhezxjz1FjXdfvi9JSRlcvln0m6VUQM5ONLI4rkXx57FyCii4jcdd0namgaAAC5XO7aIAjejutG0gzl40cztFHytjedTneetcKkIKjjuP2StoeIkW3bX4l51IT0KHdGUd6uWMpO5or1p06dWl0qOdecPHnyogXmJ1NTU9fK+SMp3CBuFEr4cWWFYaiELjzP210rWESk+Xz++jqGryYSiBhFGEX13juOs1fRUsmMbU/fEDLmSnkEyljmgFI+BkHw1rFjx7pUNFlyNkgIEY7j0Fh7ilJK84ODg+vWrm1/1rKsLgDwKKXNvu//Zfny5m/KCetmbIQQPHz48PmvvPJK9bbbdr0C0BvF95J646emps74TQhhUUpZS0vLnYVC4TlCyC6ZQc5kWM1ntNMIAtAamhEiktWrV7+YzWa3GIZ1JSIgIUCiSJCVq85PLUskOgEARYQwXZz6OSLm5NojADA8jx2PZYdifHz8IxdcsHyPZZrNQghGKU3IUmVPGIZ7GGPHCSGGZVmXWZZ1e3Nz880AgEKIIJFIbNqwYcPuVCq1NZVKCck3LjUMPiWtLUTEKJ/P/ygIgmPKkxERq1V3j2wl0bkyJUWvUqn0BUFYCMIwHwThQKFQuK5eGFCeUMezMMKIIyJnjJUHBwcvjntYzLMiGWr21O4v82V0ruu9qfZUxhgfGRnpXEhG5Wr1rzGPihhjrm3bX57ru+np6W9xzkNE5PIbLBaL9wAASMODs1UWi6KIh4wJyZiPiOh63t+TyaSBiHTHjh10IXq+7x+KxXOsVqt/m0OYah/4dCwhEYwxFV5CRETP8w7J+WeUNXymsjzP661HX9VjiGjKDovZ09OTcD1P7Tk8ZIxnMpnL40mSHGeo9UxMTFzKOWdyPoaIODk5ebec01JhVz6m4rNQKHw/tg4RBMHIgQMHmpbUGJj1BKWsKGIx6w4REX3f39fT05NYKN7WKOtFScNFxKh2s36XsqZmlRUiIlYd59lSqbxbepiHiFipVB5S3jIwMNCwsuqcQFDXPa0sxhifmJjYNIfnmwAApVLpXun4vpTJ67H3ZL46zPP8N+Jry2Qy183FK23kCIW+u9aOAMDw/XBfOp3+2rZt28KZraCxqlwumgghaAM8gAlNZ8RvyzTFa6+9+l3GWJYCTQBA2NLS8mA2m72JEIIrVqww36uDIwQgbIGq2jStK6Q4BQBAELB/xjyj7j6ssmXGwidjxR22tLRsnuv4aiFBIczu2rObOwAA4ZzzTCb3k+7ubvfo0aOJc9k+4ZyTmgRjxdatW4vFYuUuZe2UUmxtbX1saGjoAtd1vfjaFh9SzrAssDCB842k1FgZF7AQeKKRIhcRARFH48mQYRhr5hpPF3s4SSkFABCmaZoXXbS279SpUx/fvHlz2EiLqNayKKXKGBYQJq8lwGayubZ95XL5VwCQAIDAsqyuCy+88LdDQ0Pe2R21YA2vwQLjhRczZCBELGvEQGbCIVkRn5QQwpaqrLlgSYVtaGtr25/L5a4ihPBGFVa7ELr4NFW1usyHH374gSAIDgNAEwCEy5Yt+8bVV1+9AwFKp9dHztUBOpGePwwAqIzPsqxPNmIshBA0TXpdnFbI+chZKksotwIhBDqO8y9Zo4WWZa1ZtWrV/mw2u6VRhZ31AWPs+507d/JcLncH57wEAAYARO3t7dspIa2nXfKcnWeiTJiel8K2AAATicRX0+l0JyGEHzlyxKqTXFiEED40NHRpU1PTl6SAl3HOmZ3LvXym0BepLGUxFCCilBqTk8X7y9XqfbHw09rW1va0bdufq8fgQp4lln4XRCCiuX79+qHpcvl7UlkCAIRhGIYKS7BY4yD1t686RhchIkmn0wf9IEgDgCGEYKZprty4cePjjz76aFN3dzeTbTcqm7xICGGvv/76yq6urj8bhrFcJheUMfbMpk2bhhHRWHQOoNJHx3H2xXt/hULhVgCAYrn8YOx3wRjz1Lt6ClPJgOd5/461r7Dquk82WGfN1FW+/0JN09eUfP4hVryLWG9wz1JT9zAMo7lS95rC/eYYj2wmhQ8O27a9NZlMzs7b19fXYhcKt3lBMCBLj3Cm38z5RC53FSIS1b5akrIqlco+KQQfETGfz39RMV4qlbbHmIz4TEc6We9cqqbOalxZMx0MESuCX6jToTf6+vpaPG+2+zDb9K0uUlmO677VSJ1Vy2epUkmp71RXQp6CD7iu2+/7/rNhyOKdftW/xEKhcE8DPC6srGrVeQ4RWTTTnWa5XO4W+X6ZbJ18W04uEDHgnLNCoXBH7cHfac/yX5ZMVhCRVV23dz5l5fP5z6r+KSIy1/efqxWessbxofErOeeepO8gInMcZ/dilOX7/pDqljPG/ImJiUsX6oor2uVy+aexI6DZZm0NfPV7FEVYKpXuOytF1Rwl/Do+k23bt6kelhqTz+e3hWFYjI+rVCoPyTMteoYFlkq/rOlgP1OPWXX2NDg4uC4IgsrpYwXv1fk6CpOTk3fV0H+6EWHEOjb98e9HM5nLGznCUPSz2eyNvu+/tNC5mOd5h23b3tqoohbK3CIAgLGxsfu7urreIoR0AAApFotvAgDccMMNkUyhDULI7oGBgcPr1q27SQjRKYQwAaDFdd01hJATsqsuEJGkUqkHt2/ffpRSujGKIjMMozQAQCqVOmM/37lzp0ilUuSSSy4ZHx0dvX7lypU3RxE2e54/XG//l9moQQj5o23bw5ZlfQYRE77v16U/V3Z3cnz8zjVr1twBACsZY+iXy/kG8g2VcBiEkP0AsD9r2zcub2q6xTCMT1BKO+hMNm1zzo/6vv9Ue3v7s0pRhJDo/b5he87uG75Xd0LeD/T09BiN3vtYUjLRwOUOM/aQee4Img2MJSqEysdo8P7hYsYbixm/lPUuggdKCIFYCm/WXB/X0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0Ph/xf8A1sUQdKEPH6EAAAAASUVORK5CYII=" alt="KINTO"></span>
+    <div class="div"></div>
+    <div class="doc-meta"><b>Documento de Requisitos</b><small>#5211 · Precificação de Seminovos · APIs + AWS + Snowflake</small></div>
+  </div>
+  <div class="hdr-center">
+    <span class="hdr-tag">RFP consultoria</span>
+    <span class="hdr-tag">6 fases · 2 fornecedores</span>
+  </div>
+  <div class="hdr-actions">
+    <div class="theme-toggle" role="group" aria-label="Tema">
+      <button data-set="light" aria-label="Claro">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <button data-set="dark" aria-label="Escuro">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ====== TABS ====== -->
+<nav class="tabs-nav" role="tablist">
+  <button data-tab="overview" class="active" role="tab">Visão Geral</button>
+  <button data-tab="fases12" role="tab">Fases 1&ndash;2 · Descoberta &amp; APIs</button>
+  <button data-tab="fase3" role="tab">Fase 3 · Medalhão AWS</button>
+  <button data-tab="fase4" role="tab">Fase 4 · Snowflake</button>
+  <button data-tab="fase5" role="tab">Fase 5 · Modelo</button>
+  <button data-tab="fase6" role="tab">Fase 6 · Interface</button>
+  <button data-tab="rnf" role="tab">RNF &amp; Testes</button>
+  <button data-tab="proposta" role="tab">Proposta &amp; Governança</button>
+</nav>
+
+<main class="page">
+<section class="tab-panel active" id="tab-overview" role="tabpanel">
+  <div class="panel-head"><div>
+    <span class="eyebrow">Documento de Requisitos &mdash; Chamado SDP #5211</span>
+    <h2>Plataforma de Inteligência e Precificação de Veículos Seminovos</h2>
+    <p class="sub">Requisitos para contratação de consultoria: ingestão das APIs de <b>2 fornecedores de preços de mercado</b>, medalhão <b>Bronze/Silver/Gold na AWS</b>, integração com <b>Snowflake</b>, <b>modelo de precificação</b> com classificação comercial e <b>painel/aplicação</b> para o time de Precificação.</p>
+  </div></div>
+
+  <div class="card">
+    <div class="card-head"><div><h3>Ficha do documento</h3><p class="sub">requisitos &middot; chamado #5211 &middot; status Para revisão</p></div><span class="badge badge--neutral">v1.0</span></div>
+    <dl class="fm-grid">
+      <div><dt>ID</dt><dd>requisitos-5211-plataforma-precificacao-seminovos</dd></div>
+      <div><dt>Origem</dt><dd>descrição do chamado SDP #5211 (aberto 14/08/2026), estruturada e numerada para rastreabilidade</dd></div>
+      <div><dt>Escopo</dt><dd>6 fases: descoberta &middot; integração APIs &middot; medalhão AWS &middot; AWS&ndash;Snowflake &middot; modelo &middot; interface</dd></div>
+      <div><dt>Convenção</dt><dd>requisitos funcionais <code>RF-Fx-nn</code> &middot; não funcionais <code>RNF-nn</code> &middot; entregáveis <code>ENT-Fx-nn</code></dd></div>
+      <div><dt>Autor</dt><dd>Fabio A. B. Rodrigues</dd></div>
+      <div class="fm-wide"><dt>Tags</dt><dd>seminovos, precificação, RFP, consultoria, aws, medalhão, snowflake, api, retail, wholesale, backtest</dd></div>
+    </dl>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div><h3>Ficha do chamado (SDP)</h3><p class="sub">campos como estavam no ServiceDesk em 19/08/2026</p></div><span class="badge badge--info">Open</span></div>
+    <dl class="fm-grid">
+      <div><dt>Chamado</dt><dd>#5211 &middot; aberto em 14/08/2026 09:31</dd></div>
+      <div><dt>Solicitante</dt><dd>Roberto Gianolla Junior</dd></div>
+      <div><dt>Técnico</dt><dd>Vanderson Tibau Farias</dd></div>
+      <div><dt>Grupo</dt><dd>IT Dados</dd></div>
+      <div><dt>Categoria</dt><dd>DL - Dados/Extrações &middot; DL00 - Datalake Geral</dd></div>
+      <div><dt>Prioridade / Urgência</dt><dd>High / Normal &middot; peso de prioridade 3</dd></div>
+      <div class="fm-wide"><dt>Tipo</dt><dd>Nova Integração de dados (template DL00 - Dados do Datalake)</dd></div>
+    </dl>
+  </div>
+
+  <div class="insight"><h4>A demanda em uma frase</h4><p>Contratar uma consultoria para construir, ponta a ponta, uma plataforma que <b>coleta anúncios de mercado de 2 fornecedores via API</b> (preservando todo o histórico), <b>organiza os dados em Bronze/Silver/Gold na AWS</b>, <b>disponibiliza a camada Gold no Snowflake</b>, <b>calcula preço recomendado e canal de venda por veículo</b> (Retail vs. Wholesale, classes A&ndash;E) e <b>entrega o resultado numa interface dinâmica</b> para o time de Precificação &mdash; com rastreabilidade, monitoramento e atualização automatizada.</p></div>
+
+  <div class="divider"><span>Números do escopo</span></div>
+  <div class="stat-grid">
+    <div class="stat"><span class="stat-icon">&#128295;</span><span class="stat-label">Fases de projeto</span><div class="stat-value">6</div><span class="stat-foot">com aprovação formal por etapa</span></div>
+    <div class="stat"><span class="stat-icon">&#128225;</span><span class="stat-label">Fornecedores de dados</span><div class="stat-value">2</div><span class="stat-foot">APIs de preços de mercado</span></div>
+    <div class="stat"><span class="stat-icon">&#129521;</span><span class="stat-label">Camadas de dados</span><div class="stat-value">3</div><span class="stat-foot">bronze &middot; silver &middot; gold (já existem na AWS)</span></div>
+    <div class="stat"><span class="stat-icon">&#128202;</span><span class="stat-label">Alternativas de interface</span><div class="stat-value">2</div><span class="stat-foot">painel analítico ou aplicação operacional</span></div>
+    <div class="stat"><span class="stat-icon">&#128176;</span><span class="stat-label">Itens de orçamento</span><div class="stat-value">14</div><span class="stat-foot">cotados individualmente</span></div>
+    <div class="stat"><span class="stat-icon">&#128203;</span><span class="stat-label">Critérios de avaliação</span><div class="stat-value">14</div><span class="stat-foot">das propostas recebidas</span></div>
+  </div>
+
+  <div class="divider"><span>Objetivo (seção 2 do chamado)</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>A solução deverá permitir</th></tr></thead><tbody>
+<tr><td><code>OBJ-01</code></td><td>Consumir automaticamente as APIs de dois fornecedores de preços de mercado</td></tr>
+<tr><td><code>OBJ-02</code></td><td>Armazenar o histórico integral das coletas</td></tr>
+<tr><td><code>OBJ-03</code></td><td>Padronizar e unificar os dados dos fornecedores</td></tr>
+<tr><td><code>OBJ-04</code></td><td>Relacionar os anúncios externos aos veículos internos</td></tr>
+<tr><td><code>OBJ-05</code></td><td>Calcular preços recomendados e faixas de negociação</td></tr>
+<tr><td><code>OBJ-06</code></td><td>Apoiar o direcionamento entre os canais Retail e Wholesale</td></tr>
+<tr><td><code>OBJ-07</code></td><td>Disponibilizar os resultados em um painel ou aplicação dinâmica</td></tr>
+<tr><td><code>OBJ-08</code></td><td>Garantir rastreabilidade, monitoramento e atualização automatizada</td></tr>
+</tbody></table></div>
+
+  <div class="callout callout--warning"><span class="ico">!</span><div><b>Dois cenários obrigatórios na proposta do modelo</b><p>A proposta deverá esclarecer &mdash; e <b>cotar separadamente</b> &mdash; se contempla <b>(a)</b> apenas a industrialização de uma lógica de precificação fornecida pela KINTO, ou <b>(b)</b> a revisão, otimização e desenvolvimento metodológico do modelo. Ver aba <i>Fase 5 &mdash; Modelo</i>.</p></div></div>
+
+  <div class="callout"><span class="ico">&rarr;</span><div><b>Plataforma de processamento em aberto</b><p>O chamado cita &ldquo;Snowflake <i>(ou outra plataforma)</i>&rdquo; tanto para o processamento do modelo quanto para a integração da Fase 4. As propostas podem sugerir alternativa, desde que <b>tecnicamente justificada</b>.</p></div></div>
+</section>
+
+<section class="tab-panel" id="tab-fases12" role="tabpanel">
+  <div class="panel-head"><div><span class="eyebrow">Escopo técnico &mdash; seção 3 do chamado</span><h2>Fase 1 &mdash; Descoberta &middot; Fase 2 &mdash; Integração com as APIs externas</h2><p class="sub">A descoberta desenha a solução e trava premissas; a integração implementa a coleta resiliente e historiada dos dois fornecedores.</p></div></div>
+
+  <div class="divider"><span>Fase 1 &mdash; Descoberta e desenho da solução</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Requisito — a consultoria deverá</th></tr></thead><tbody>
+<tr><td><code>RF-F1-01</code></td><td>Realizar levantamento técnico e funcional</td></tr>
+<tr><td><code>RF-F1-02</code></td><td>Analisar a documentação das APIs dos dois fornecedores</td></tr>
+<tr><td><code>RF-F1-03</code></td><td>Avaliar as estruturas atuais na AWS e no Snowflake</td></tr>
+<tr><td><code>RF-F1-04</code></td><td>Mapear as fontes internas utilizadas na precificação</td></tr>
+<tr><td><code>RF-F1-05</code></td><td>Confirmar volumes, periodicidade, limites e custos das APIs</td></tr>
+<tr><td><code>RF-F1-06</code></td><td>Definir a arquitetura final da solução</td></tr>
+<tr><td><code>RF-F1-07</code></td><td>Definir regras de segurança, acesso, atualização e retenção</td></tr>
+<tr><td><code>RF-F1-08</code></td><td>Elaborar o desenho técnico e o plano de implantação</td></tr>
+</tbody></table></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Entregável</th></tr></thead><tbody>
+<tr><td><code>ENT-F1-01</code></td><td>Documento de arquitetura</td></tr>
+<tr><td><code>ENT-F1-02</code></td><td>Mapeamento de fontes e campos</td></tr>
+<tr><td><code>ENT-F1-03</code></td><td>Fluxo ponta a ponta</td></tr>
+<tr><td><code>ENT-F1-04</code></td><td>Cronograma detalhado</td></tr>
+<tr><td><code>ENT-F1-05</code></td><td>Matriz de responsabilidades</td></tr>
+<tr><td><code>ENT-F1-06</code></td><td>Lista de premissas, dependências e riscos</td></tr>
+</tbody></table></div>
+
+  <div class="divider"><span>Fase 2 &mdash; Integração com as APIs externas</span></div>
+  <p class="sub">Implementar a integração com os dois fornecedores de dados de mercado, contemplando:</p>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Requisito da integração</th></tr></thead><tbody>
+<tr><td><code>RF-F2-01</code></td><td>Autenticação segura</td></tr>
+<tr><td><code>RF-F2-02</code></td><td>Paginação</td></tr>
+<tr><td><code>RF-F2-03</code></td><td>Controle dos limites de requisição (rate limits)</td></tr>
+<tr><td><code>RF-F2-04</code></td><td>Tratamento de indisponibilidades e timeouts</td></tr>
+<tr><td><code>RF-F2-05</code></td><td>Retentativas automáticas</td></tr>
+<tr><td><code>RF-F2-06</code></td><td>Cargas completas e incrementais</td></tr>
+<tr><td><code>RF-F2-07</code></td><td>Controle de duplicidades</td></tr>
+<tr><td><code>RF-F2-08</code></td><td>Registro de data e hora da coleta</td></tr>
+<tr><td><code>RF-F2-09</code></td><td>Preservação do payload original</td></tr>
+<tr><td><code>RF-F2-10</code></td><td>Logs de execução</td></tr>
+<tr><td><code>RF-F2-11</code></td><td>Monitoramento de falhas</td></tr>
+<tr><td><code>RF-F2-12</code></td><td>Possibilidade de reprocessamento</td></tr>
+<tr><td><code>RF-F2-13</code></td><td>Alertas em caso de erro ou ausência de dados</td></tr>
+</tbody></table></div>
+
+  <div class="callout callout--warning"><span class="ico">!</span><div><b>Snapshots históricos são imutáveis</b><p>As coletas <b>não deverão ser sobrescritas</b>. Cada snapshot deve ser preservado para permitir análises futuras de: evolução do preço anunciado &middot; alterações de preço &middot; entrada e saída de anúncios &middot; tempo de permanência &middot; volume de oferta &middot; liquidez por modelo e versão.</p></div></div>
+
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Entregável</th></tr></thead><tbody>
+<tr><td><code>ENT-F2-01</code></td><td>Código-fonte das integrações</td></tr>
+<tr><td><code>ENT-F2-02</code></td><td>Jobs automatizados</td></tr>
+<tr><td><code>ENT-F2-03</code></td><td>Tabelas de controle</td></tr>
+<tr><td><code>ENT-F2-04</code></td><td>Logs e alertas</td></tr>
+<tr><td><code>ENT-F2-05</code></td><td>Documentação de operação e reprocessamento</td></tr>
+<tr><td><code>ENT-F2-06</code></td><td>Evidências de testes das APIs</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="tab-panel" id="tab-fase3" role="tabpanel">
+  <div class="panel-head"><div><span class="eyebrow">Fase 3 &mdash; arquitetura de dados em três camadas</span><h2>Camadas Bronze, Silver e Gold na AWS</h2><p class="sub">O chamado registra que <b>as camadas já existem na infraestrutura AWS atual</b> &mdash; a fase estrutura os dados dos fornecedores dentro delas.</p></div></div>
+
+  <div class="divider"><span>Bronze &mdash; dado bruto, fiel ao fornecedor</span></div>
+  <p class="sub">Cada fornecedor deverá possuir <b>estrutura própria</b> na camada Bronze, preservando:</p>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Atributo preservado</th></tr></thead><tbody>
+<tr><td><code>RF-F3-BZ-01</code></td><td>Payload original</td></tr>
+<tr><td><code>RF-F3-BZ-02</code></td><td>Fornecedor de origem</td></tr>
+<tr><td><code>RF-F3-BZ-03</code></td><td>Identificador do anúncio</td></tr>
+<tr><td><code>RF-F3-BZ-04</code></td><td>Data e hora da coleta</td></tr>
+<tr><td><code>RF-F3-BZ-05</code></td><td>Identificador da execução</td></tr>
+<tr><td><code>RF-F3-BZ-06</code></td><td>Metadados técnicos</td></tr>
+<tr><td><code>RF-F3-BZ-07</code></td><td>Status da requisição</td></tr>
+<tr><td><code>RF-F3-BZ-08</code></td><td>Versão do layout recebido</td></tr>
+</tbody></table></div>
+
+  <div class="divider"><span>Silver &mdash; padronização, limpeza e validação</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Requisito de tratamento</th></tr></thead><tbody>
+<tr><td><code>RF-F3-SV-01</code></td><td>Tipagem das colunas</td></tr>
+<tr><td><code>RF-F3-SV-02</code></td><td>Normalização de marca, modelo, versão e carroceria</td></tr>
+<tr><td><code>RF-F3-SV-03</code></td><td>Normalização de combustível e câmbio</td></tr>
+<tr><td><code>RF-F3-SV-04</code></td><td>Padronização de ano de fabricação e ano-modelo</td></tr>
+<tr><td><code>RF-F3-SV-05</code></td><td>Tratamento de KM e preço</td></tr>
+<tr><td><code>RF-F3-SV-06</code></td><td>Normalização de localização</td></tr>
+<tr><td><code>RF-F3-SV-07</code></td><td>Identificação do tipo de vendedor</td></tr>
+<tr><td><code>RF-F3-SV-08</code></td><td>Deduplicação</td></tr>
+<tr><td><code>RF-F3-SV-09</code></td><td>Regras de qualidade</td></tr>
+<tr><td><code>RF-F3-SV-10</code></td><td>Tratamento de alterações nos contratos das APIs</td></tr>
+<tr><td><code>RF-F3-SV-11</code></td><td>Criação de chaves técnicas e comerciais</td></tr>
+</tbody></table></div>
+
+  <div class="divider"><span>Gold &mdash; visão unificada dos dois fornecedores</span></div>
+  <div class="insight"><h4>Campos da visão unificada (quando disponíveis)</h4><p>Data da coleta &middot; Fornecedor &middot; Identificador do anúncio &middot; Marca &middot; Modelo &middot; Versão &middot; Modelo reduzido &middot; Carroceria &middot; Motor &middot; Câmbio &middot; Combustível &middot; Ano de fabricação &middot; Ano-modelo &middot; Quilometragem &middot; Preço anunciado &middot; Região &middot; Tipo de vendedor &middot; Código FIPE &middot; Opcionais &middot; Cor &middot; Status do anúncio &middot; Indicadores de qualidade e confiabilidade do registro.</p></div>
+
+  <p class="sub">A camada Gold também deverá disponibilizar <b>agregações de comparáveis</b>:</p>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Agregação</th></tr></thead><tbody>
+<tr><td><code>RF-F3-AG-01</code></td><td>Quantidade de anúncios</td></tr>
+<tr><td><code>RF-F3-AG-02</code></td><td>Preço mínimo</td></tr>
+<tr><td><code>RF-F3-AG-03</code></td><td>Percentil 25</td></tr>
+<tr><td><code>RF-F3-AG-04</code></td><td>Mediana</td></tr>
+<tr><td><code>RF-F3-AG-05</code></td><td>Percentil 75</td></tr>
+<tr><td><code>RF-F3-AG-06</code></td><td>Preço máximo</td></tr>
+<tr><td><code>RF-F3-AG-07</code></td><td>KM mediano</td></tr>
+<tr><td><code>RF-F3-AG-08</code></td><td>Dispersão dos preços</td></tr>
+<tr><td><code>RF-F3-AG-09</code></td><td>Idade da referência</td></tr>
+<tr><td><code>RF-F3-AG-10</code></td><td>Cobertura por modelo, versão, ano e região</td></tr>
+</tbody></table></div>
+
+  <div class="divider"><span>Requisitos adicionais da fase</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Requisito</th></tr></thead><tbody>
+<tr><td><code>RF-F3-AD-01</code></td><td>Catálogo de dados</td></tr>
+<tr><td><code>RF-F3-AD-02</code></td><td>Particionamento adequado</td></tr>
+<tr><td><code>RF-F3-AD-03</code></td><td>Controle de schema evolution</td></tr>
+<tr><td><code>RF-F3-AD-04</code></td><td>Criptografia</td></tr>
+<tr><td><code>RF-F3-AD-05</code></td><td>Controle de acessos</td></tr>
+<tr><td><code>RF-F3-AD-06</code></td><td>Otimização de armazenamento e processamento</td></tr>
+<tr><td><code>RF-F3-AD-07</code></td><td>Testes de qualidade automatizados</td></tr>
+<tr><td><code>RF-F3-AD-08</code></td><td>Monitoramento de atualização</td></tr>
+<tr><td><code>RF-F3-AD-09</code></td><td>Documentação do modelo de dados</td></tr>
+</tbody></table></div>
+
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Entregável</th></tr></thead><tbody>
+<tr><td><code>ENT-F3-01</code></td><td>Estruturas Bronze, Silver e Gold</td></tr>
+<tr><td><code>ENT-F3-02</code></td><td>Dicionário de dados</td></tr>
+<tr><td><code>ENT-F3-03</code></td><td>Diagrama do modelo</td></tr>
+<tr><td><code>ENT-F3-04</code></td><td>Jobs de transformação</td></tr>
+<tr><td><code>ENT-F3-05</code></td><td>Regras de qualidade</td></tr>
+<tr><td><code>ENT-F3-06</code></td><td>Relatório de cobertura e reconciliação entre os fornecedores</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="tab-panel" id="tab-fase4" role="tabpanel">
+  <div class="panel-head"><div><span class="eyebrow">Fase 4 &mdash; consumo da camada Gold</span><h2>Integração AWS &ndash; Snowflake (ou outra plataforma)</h2><p class="sub">A consultoria deverá <b>avaliar e recomendar</b> a arquitetura mais adequada para o Snowflake consumir a camada Gold da AWS.</p></div></div>
+
+  <div class="insight"><h4>Alternativas a avaliar</h4><p>External Stage &middot; Snowpipe &middot; Tasks e Streams &middot; integração automatizada por arquivos Parquet &middot; <b>outra solução tecnicamente justificada</b>.</p></div>
+
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Requisito da integração</th></tr></thead><tbody>
+<tr><td><code>RF-F4-01</code></td><td>Autenticação sem credenciais fixas em código</td></tr>
+<tr><td><code>RF-F4-02</code></td><td>Criptografia</td></tr>
+<tr><td><code>RF-F4-03</code></td><td>Controle de acesso</td></tr>
+<tr><td><code>RF-F4-04</code></td><td>Carga incremental</td></tr>
+<tr><td><code>RF-F4-05</code></td><td>Identificação do lote de origem</td></tr>
+<tr><td><code>RF-F4-06</code></td><td>Controle de duplicidade</td></tr>
+<tr><td><code>RF-F4-07</code></td><td>Reconciliação entre origem e destino</td></tr>
+<tr><td><code>RF-F4-08</code></td><td>Monitoramento de atraso e falhas</td></tr>
+<tr><td><code>RF-F4-09</code></td><td>Possibilidade de reprocessamento</td></tr>
+<tr><td><code>RF-F4-10</code></td><td>Registro da data de atualização</td></tr>
+<tr><td><code>RF-F4-11</code></td><td>Controle de custos</td></tr>
+</tbody></table></div>
+
+  <div class="divider"><span>Critérios mínimos de reconciliação</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Critério</th></tr></thead><tbody>
+<tr><td><code>RF-F4-RC-01</code></td><td>Quantidade de registros na origem e no destino</td></tr>
+<tr><td><code>RF-F4-RC-02</code></td><td>Quantidade de anúncios distintos</td></tr>
+<tr><td><code>RF-F4-RC-03</code></td><td>Controle por fornecedor e data de coleta</td></tr>
+<tr><td><code>RF-F4-RC-04</code></td><td>Soma e distribuição dos preços</td></tr>
+<tr><td><code>RF-F4-RC-05</code></td><td>Registros rejeitados</td></tr>
+<tr><td><code>RF-F4-RC-06</code></td><td>Duplicidades</td></tr>
+<tr><td><code>RF-F4-RC-07</code></td><td>Tempo entre disponibilização na AWS e consumo no Snowflake</td></tr>
+</tbody></table></div>
+
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Entregável</th></tr></thead><tbody>
+<tr><td><code>ENT-F4-01</code></td><td>Objetos necessários no Snowflake</td></tr>
+<tr><td><code>ENT-F4-02</code></td><td>Pipeline automatizado</td></tr>
+<tr><td><code>ENT-F4-03</code></td><td>Tabelas de controle</td></tr>
+<tr><td><code>ENT-F4-04</code></td><td>Rotinas de reconciliação</td></tr>
+<tr><td><code>ENT-F4-05</code></td><td>Monitoramento e alertas</td></tr>
+<tr><td><code>ENT-F4-06</code></td><td>Documentação técnica e operacional</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="tab-panel" id="tab-fase5" role="tabpanel">
+  <div class="panel-head"><div><span class="eyebrow">Fase 5 &mdash; precificação no Snowflake</span><h2>Modelo de precificação e classificação comercial</h2><p class="sub">Desenvolver e operacionalizar o código de precificação, preferencialmente no Snowflake (SQL, Snowpark Python, procedures, tasks ou componentes equivalentes).</p></div></div>
+
+  <div class="insight"><h4>Insumos do modelo</h4><p>Histórico interno de vendas &middot; inventário atual &middot; FIPE &middot; book value &middot; dados do veículo &middot; quilometragem &middot; idade &middot; avarias &middot; segmento de origem &middot; canal histórico &middot; dados externos de mercado &middot; regras comerciais disponibilizadas pela KINTO.</p></div>
+
+  <div class="divider"><span>Resultados mínimos esperados por veículo</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Resultado</th></tr></thead><tbody>
+<tr><td><code>RF-F5-RS-01</code></td><td>Preço interno estimado</td></tr>
+<tr><td><code>RF-F5-RS-02</code></td><td>Referência externa de mercado</td></tr>
+<tr><td><code>RF-F5-RS-03</code></td><td>Preço recomendado</td></tr>
+<tr><td><code>RF-F5-RS-04</code></td><td>Faixa operacional</td></tr>
+<tr><td><code>RF-F5-RS-05</code></td><td>Faixa conservadora</td></tr>
+<tr><td><code>RF-F5-RS-06</code></td><td>Percentis de preço</td></tr>
+<tr><td><code>RF-F5-RS-07</code></td><td>Quantidade de comparáveis</td></tr>
+<tr><td><code>RF-F5-RS-08</code></td><td>Nível de confiança</td></tr>
+<tr><td><code>RF-F5-RS-09</code></td><td>Data da referência de mercado</td></tr>
+<tr><td><code>RF-F5-RS-10</code></td><td>Modelo e versão utilizados no matching</td></tr>
+<tr><td><code>RF-F5-RS-11</code></td><td>Motivos de baixa confiança</td></tr>
+<tr><td><code>RF-F5-RS-12</code></td><td>Classificação comercial</td></tr>
+<tr><td><code>RF-F5-RS-13</code></td><td>Canal sugerido</td></tr>
+<tr><td><code>RF-F5-RS-14</code></td><td>Explicação dos principais fatores da recomendação</td></tr>
+</tbody></table></div>
+
+  <div class="divider"><span>Classificação comercial inicial (parametrizável)</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>Classe</th><th>Critério</th><th>Direcionamento</th></tr></thead><tbody>
+<tr><td><b>A</b></td><td>avarias iguais a zero e KM médio anual de até 10 mil</td><td>Elegível para Retail</td></tr>
+<tr><td><b>B</b></td><td>avarias de até R$ 4 mil e KM médio anual de até 20 mil</td><td>Elegível para Retail</td></tr>
+<tr><td><b>C</b></td><td>avarias de até R$ 7 mil, independentemente do KM</td><td>Wholesale, com possibilidade de exceção</td></tr>
+<tr><td><b>D</b></td><td>avarias de até 40% do valor FIPE</td><td>Wholesale</td></tr>
+<tr><td><b>E</b></td><td>demais casos</td><td>Wholesale</td></tr>
+</tbody></table></div>
+  <div class="callout callout--danger"><span class="ico">!</span><div><b>Regras de aplicação</b><p>A aplicação das regras deverá ser <b>sequencial</b>. Valores <b>nulos</b> de avaria <b>não poderão ser considerados como zero</b>. A solução deverá permitir a <b>parametrização</b> das regras &mdash; os valores acima são a referência inicial.</p></div></div>
+
+  <div class="divider"><span>Matching de veículos e anúncios</span></div>
+  <p class="sub">O relacionamento deverá adotar <b>hierarquia controlada</b>, considerando, nesta ordem de precedência:</p>
+  <div class="t-wrap"><table class="t"><thead><tr><th>Nível</th><th>Critério de matching</th></tr></thead><tbody>
+<tr><td>1</td><td>Código FIPE</td></tr>
+<tr><td>2</td><td>Marca, modelo, versão e ano-modelo</td></tr>
+<tr><td>3</td><td>Carroceria, motor, câmbio e combustível</td></tr>
+<tr><td>4</td><td>Faixa de quilometragem</td></tr>
+<tr><td>5</td><td>Região</td></tr>
+<tr><td>6</td><td>Tipo de vendedor</td></tr>
+<tr><td>7</td><td>Similaridade textual controlada, <b>apenas como fallback</b></td></tr>
+</tbody></table></div>
+  <div class="insight"><h4>O resultado do matching deverá identificar</h4><p>Match exato &middot; match aproximado &middot; nível de confiança &middot; regra utilizada &middot; motivo de ausência de comparáveis.</p></div>
+
+  <div class="divider"><span>Validação do modelo &mdash; backtests temporais</span></div>
+  <p class="sub">Executar backtests <b>mantendo vendas futuras fora do treinamento</b>, apresentando no mínimo:</p>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Métrica / análise</th></tr></thead><tbody>
+<tr><td><code>RF-F5-VL-01</code></td><td>MAE (erro absoluto médio)</td></tr>
+<tr><td><code>RF-F5-VL-02</code></td><td>RMSE (raiz do erro quadrático médio)</td></tr>
+<tr><td><code>RF-F5-VL-03</code></td><td>WAPE (erro percentual absoluto ponderado)</td></tr>
+<tr><td><code>RF-F5-VL-04</code></td><td>MAPE (erro percentual absoluto médio)</td></tr>
+<tr><td><code>RF-F5-VL-05</code></td><td>R²</td></tr>
+<tr><td><code>RF-F5-VL-06</code></td><td>Viés médio</td></tr>
+<tr><td><code>RF-F5-VL-07</code></td><td>Erro por modelo</td></tr>
+<tr><td><code>RF-F5-VL-08</code></td><td>Erro por canal</td></tr>
+<tr><td><code>RF-F5-VL-09</code></td><td>Erro por faixa de preço</td></tr>
+<tr><td><code>RF-F5-VL-10</code></td><td>Percentis do erro absoluto</td></tr>
+<tr><td><code>RF-F5-VL-11</code></td><td>Cobertura das faixas previstas</td></tr>
+<tr><td><code>RF-F5-VL-12</code></td><td>Comparação com baselines</td></tr>
+<tr><td><code>RF-F5-VL-13</code></td><td>Análise de estabilidade temporal</td></tr>
+</tbody></table></div>
+
+  <div class="callout callout--warning"><span class="ico">!</span><div><b>Dois cenários, orçados separadamente</b><p>A proposta deverá esclarecer se contempla <b>(a)</b> apenas a industrialização de uma lógica fornecida pela KINTO, ou <b>(b)</b> revisão, otimização e desenvolvimento metodológico do modelo. Os dois cenários deverão ser apresentados <b>separadamente na proposta comercial</b>.</p></div></div>
+
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Entregável</th></tr></thead><tbody>
+<tr><td><code>ENT-F5-01</code></td><td>Código-fonte versionado</td></tr>
+<tr><td><code>ENT-F5-02</code></td><td>Modelo de dados</td></tr>
+<tr><td><code>ENT-F5-03</code></td><td>Rotinas automatizadas</td></tr>
+<tr><td><code>ENT-F5-04</code></td><td>Backtest</td></tr>
+<tr><td><code>ENT-F5-05</code></td><td>Relatório de métricas</td></tr>
+<tr><td><code>ENT-F5-06</code></td><td>Tabelas de resultados</td></tr>
+<tr><td><code>ENT-F5-07</code></td><td>Documentação das regras</td></tr>
+<tr><td><code>ENT-F5-08</code></td><td>Manual de manutenção e recalibração</td></tr>
+<tr><td><code>ENT-F5-09</code></td><td>Processo de implantação e rollback</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="tab-panel" id="tab-fase6" role="tabpanel">
+  <div class="panel-head"><div><span class="eyebrow">Fase 6 &mdash; interface para o time de Precificação</span><h2>Painel analítico ou aplicação operacional</h2><p class="sub">A consultoria deverá apresentar <b>separadamente</b> as duas alternativas, com recomendação de tecnologia justificada.</p></div></div>
+
+  <div class="divider"><span>Alternativa A &mdash; Painel analítico (consulta)</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Funcionalidade</th></tr></thead><tbody>
+<tr><td><code>RF-F6-A-01</code></td><td>Visão consolidada do inventário</td></tr>
+<tr><td><code>RF-F6-A-02</code></td><td>Pesquisa por placa</td></tr>
+<tr><td><code>RF-F6-A-03</code></td><td>Filtros por modelo, versão, ano, classe e canal</td></tr>
+<tr><td><code>RF-F6-A-04</code></td><td>Preço recomendado</td></tr>
+<tr><td><code>RF-F6-A-05</code></td><td>Faixas de preço</td></tr>
+<tr><td><code>RF-F6-A-06</code></td><td>Referências internas e externas</td></tr>
+<tr><td><code>RF-F6-A-07</code></td><td>Comparáveis de mercado</td></tr>
+<tr><td><code>RF-F6-A-08</code></td><td>Indicadores de confiança</td></tr>
+<tr><td><code>RF-F6-A-09</code></td><td>Alertas de ausência ou baixa qualidade dos dados</td></tr>
+<tr><td><code>RF-F6-A-10</code></td><td>Exportação para Excel ou CSV</td></tr>
+<tr><td><code>RF-F6-A-11</code></td><td>Histórico de preços e atualizações</td></tr>
+</tbody></table></div>
+
+  <div class="divider"><span>Alternativa B &mdash; Aplicação operacional (analítico + operação)</span></div>
+  <p class="sub">Além das funcionalidades analíticas da Alternativa A, deverá permitir:</p>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Funcionalidade</th></tr></thead><tbody>
+<tr><td><code>RF-F6-B-01</code></td><td>Alteração de parâmetros</td></tr>
+<tr><td><code>RF-F6-B-02</code></td><td>Simulação de cenários</td></tr>
+<tr><td><code>RF-F6-B-03</code></td><td>Registro do preço decidido</td></tr>
+<tr><td><code>RF-F6-B-04</code></td><td>Registro de justificativas</td></tr>
+<tr><td><code>RF-F6-B-05</code></td><td>Aprovação por alçada</td></tr>
+<tr><td><code>RF-F6-B-06</code></td><td>Histórico das decisões</td></tr>
+<tr><td><code>RF-F6-B-07</code></td><td>Identificação do usuário</td></tr>
+<tr><td><code>RF-F6-B-08</code></td><td>Trilha de auditoria</td></tr>
+<tr><td><code>RF-F6-B-09</code></td><td>Comentários</td></tr>
+<tr><td><code>RF-F6-B-10</code></td><td>Exportação e integração com outros processos</td></tr>
+</tbody></table></div>
+
+  <div class="insight"><h4>Recomendação de tecnologia</h4><p>A consultoria deverá recomendar a tecnologia mais adequada considerando: ambiente corporativo existente &middot; governança &middot; licenciamento &middot; segurança &middot; experiência do usuário &middot; custos de manutenção.</p></div>
+
+  <div class="callout callout--warning"><span class="ico">!</span><div><b>Se a proposta for Power BI</b><p>Deverá ser esclarecido como serão tratados os recursos de <b>edição, gravação e aprovação</b>, pois esses recursos não são nativos de um painel exclusivamente analítico.</p></div></div>
+
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Entregável</th></tr></thead><tbody>
+<tr><td><code>ENT-F6-01</code></td><td>Protótipo validado com usuários</td></tr>
+<tr><td><code>ENT-F6-02</code></td><td>Interface homologada</td></tr>
+<tr><td><code>ENT-F6-03</code></td><td>Perfis de acesso</td></tr>
+<tr><td><code>ENT-F6-04</code></td><td>Documentação</td></tr>
+<tr><td><code>ENT-F6-05</code></td><td>Manual do usuário</td></tr>
+<tr><td><code>ENT-F6-06</code></td><td>Treinamento</td></tr>
+<tr><td><code>ENT-F6-07</code></td><td>Publicação em ambiente produtivo</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="tab-panel" id="tab-rnf" role="tabpanel">
+  <div class="panel-head"><div><span class="eyebrow">Seções 4 e 5 do chamado</span><h2>Requisitos não funcionais &middot; Testes e homologação</h2><p class="sub">Válidos para todas as fases da solução.</p></div></div>
+
+  <div class="divider"><span>Requisitos não funcionais</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Requisito</th></tr></thead><tbody>
+<tr><td><code>RNF-01</code></td><td>Segurança e princípio do menor privilégio</td></tr>
+<tr><td><code>RNF-02</code></td><td>Segregação entre desenvolvimento, homologação e produção</td></tr>
+<tr><td><code>RNF-03</code></td><td>Código versionado</td></tr>
+<tr><td><code>RNF-04</code></td><td>Parametrização sem alteração direta do código</td></tr>
+<tr><td><code>RNF-05</code></td><td>Logs e rastreabilidade</td></tr>
+<tr><td><code>RNF-06</code></td><td>Alertas automáticos</td></tr>
+<tr><td><code>RNF-07</code></td><td>Observabilidade dos pipelines</td></tr>
+<tr><td><code>RNF-08</code></td><td>Possibilidade de reprocessamento</td></tr>
+<tr><td><code>RNF-09</code></td><td>Documentação técnica e funcional</td></tr>
+<tr><td><code>RNF-10</code></td><td>Otimização de custos AWS e Snowflake</td></tr>
+<tr><td><code>RNF-11</code></td><td>Desempenho compatível com uso interativo</td></tr>
+<tr><td><code>RNF-12</code></td><td>Tratamento de mudanças nas APIs</td></tr>
+<tr><td><code>RNF-13</code></td><td>Adequação à LGPD e às políticas internas</td></tr>
+<tr><td><code>RNF-14</code></td><td>Transferência de conhecimento para a equipe interna</td></tr>
+<tr><td><code>RNF-15</code></td><td>Ausência de dependência técnica exclusiva da consultoria</td></tr>
+</tbody></table></div>
+
+  <div class="divider"><span>Testes e homologação &mdash; a proposta deverá contemplar</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Teste / etapa</th></tr></thead><tbody>
+<tr><td><code>TST-01</code></td><td>Testes unitários</td></tr>
+<tr><td><code>TST-02</code></td><td>Testes de integração</td></tr>
+<tr><td><code>TST-03</code></td><td>Testes de qualidade dos dados</td></tr>
+<tr><td><code>TST-04</code></td><td>Testes de carga incremental</td></tr>
+<tr><td><code>TST-05</code></td><td>Testes de falha e reprocessamento</td></tr>
+<tr><td><code>TST-06</code></td><td>Testes de reconciliação AWS&ndash;Snowflake</td></tr>
+<tr><td><code>TST-07</code></td><td>Testes de performance</td></tr>
+<tr><td><code>TST-08</code></td><td>Backtest do modelo</td></tr>
+<tr><td><code>TST-09</code></td><td>Homologação funcional com o time de Precificação</td></tr>
+<tr><td><code>TST-10</code></td><td>Período de operação assistida</td></tr>
+</tbody></table></div>
+
+  <div class="callout"><span class="ico">&rarr;</span><div><b>Critérios de aprovação</b><p>Os critérios quantitativos finais serão definidos <b>durante a fase de descoberta</b>. A aprovação não será baseada exclusivamente em uma métrica de acurácia, mas também em <b>cobertura, estabilidade, explicabilidade, qualidade dos dados e aderência operacional</b>.</p></div></div>
+</section>
+
+<section class="tab-panel" id="tab-proposta" role="tabpanel">
+  <div class="panel-head"><div><span class="eyebrow">Seções 6 a 12 do chamado</span><h2>Responsabilidades, premissas, orçamento, proposta e avaliação</h2><p class="sub">O que cada parte entrega, o que a proposta comercial precisa conter e como será avaliada.</p></div></div>
+
+  <div class="divider"><span>Responsabilidades esperadas</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>Da consultoria</th><th>Da KINTO</th></tr></thead><tbody>
+<tr><td>Arquitetura e desenvolvimento</td><td>Disponibilização das credenciais e documentação das APIs</td></tr>
+<tr><td>Configuração dos pipelines</td><td>Contratação e licenciamento dos fornecedores externos</td></tr>
+<tr><td>Implementação das integrações</td><td>Disponibilização dos ambientes AWS e Snowflake</td></tr>
+<tr><td>Construção dos objetos de dados</td><td>Disponibilização das bases internas</td></tr>
+<tr><td>Desenvolvimento ou industrialização do modelo</td><td>Validação das regras de negócio</td></tr>
+<tr><td>Desenvolvimento da interface</td><td>Participação nas homologações</td></tr>
+<tr><td>Testes e documentação</td><td>Aprovação dos acessos</td></tr>
+<tr><td>Treinamento e implantação</td><td>Disponibilização dos usuários-chave</td></tr>
+<tr><td>Operação assistida</td><td></td></tr>
+<tr><td>Transferência do código-fonte e conhecimento</td><td></td></tr>
+</tbody></table></div>
+
+  <div class="divider"><span>Premissas e dependências &mdash; a proposta deverá explicitar</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Item</th></tr></thead><tbody>
+<tr><td><code>PRE-01</code></td><td>Volumes considerados</td></tr>
+<tr><td><code>PRE-02</code></td><td>Frequência das atualizações</td></tr>
+<tr><td><code>PRE-03</code></td><td>Limites das APIs</td></tr>
+<tr><td><code>PRE-04</code></td><td>Histórico inicialmente disponível</td></tr>
+<tr><td><code>PRE-05</code></td><td>Retenção proposta</td></tr>
+<tr><td><code>PRE-06</code></td><td>Tecnologias e licenças necessárias</td></tr>
+<tr><td><code>PRE-07</code></td><td>Ambientes incluídos</td></tr>
+<tr><td><code>PRE-08</code></td><td>Dependências de infraestrutura</td></tr>
+<tr><td><code>PRE-09</code></td><td>Dependências de equipes internas</td></tr>
+<tr><td><code>PRE-10</code></td><td>Necessidade de acesso a dados sensíveis</td></tr>
+<tr><td><code>PRE-11</code></td><td>Custos recorrentes estimados</td></tr>
+<tr><td><code>PRE-12</code></td><td>Restrições técnicas identificadas</td></tr>
+</tbody></table></div>
+  <div class="callout callout--warning"><span class="ico">!</span><div><b>Licenciamento à parte</b><p>Os valores de licenciamento dos fornecedores de dados, Power BI, Snowflake, AWS ou outras plataformas deverão ser <b>separados do custo de implementação</b>.</p></div></div>
+
+  <div class="divider"><span>Orçamento individualizado &mdash; 14 itens</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Item de orçamento</th></tr></thead><tbody>
+<tr><td><code>ORC-01</code></td><td>Descoberta e arquitetura</td></tr>
+<tr><td><code>ORC-02</code></td><td>Integração com a API do fornecedor 1</td></tr>
+<tr><td><code>ORC-03</code></td><td>Integração com a API do fornecedor 2</td></tr>
+<tr><td><code>ORC-04</code></td><td>Camadas Bronze, Silver e Gold</td></tr>
+<tr><td><code>ORC-05</code></td><td>Integração AWS&ndash;Snowflake</td></tr>
+<tr><td><code>ORC-06</code></td><td>Industrialização da lógica atual de precificação</td></tr>
+<tr><td><code>ORC-07</code></td><td>Revisão e otimização metodológica do modelo</td></tr>
+<tr><td><code>ORC-08</code></td><td>Painel analítico</td></tr>
+<tr><td><code>ORC-09</code></td><td>Aplicação operacional com simulação e gravação</td></tr>
+<tr><td><code>ORC-10</code></td><td>Testes e homologação</td></tr>
+<tr><td><code>ORC-11</code></td><td>Treinamento</td></tr>
+<tr><td><code>ORC-12</code></td><td>Operação assistida</td></tr>
+<tr><td><code>ORC-13</code></td><td>Sustentação mensal</td></tr>
+<tr><td><code>ORC-14</code></td><td>Banco de horas para evoluções</td></tr>
+</tbody></table></div>
+
+  <div class="divider"><span>Conteúdo esperado da proposta técnica e comercial</span></div>
+  <div class="insight"><h4>A proposta deverá apresentar</h4><p>Entendimento do problema &middot; arquitetura sugerida &middot; tecnologias utilizadas &middot; escopo detalhado &middot; entregáveis &middot; cronograma por fase &middot; quantidade estimada de horas &middot; composição da equipe &middot; senioridade dos profissionais &middot; responsabilidades de cada parte &middot; premissas &middot; dependências &middot; riscos &middot; itens não contemplados &middot; valor por fase &middot; valor total &middot; custos recorrentes &middot; condições de pagamento &middot; prazo de validade &middot; garantia &middot; modelo de suporte &middot; prazo de atendimento &middot; referências de projetos semelhantes.</p></div>
+  <div class="insight"><h4>E diferenciar claramente</h4><p>Preço fechado por entregável &middot; serviços por hora &middot; custos de implantação &middot; custos recorrentes &middot; licenciamento &middot; infraestrutura &middot; sustentação &middot; evoluções futuras.</p></div>
+
+  <div class="divider"><span>Cronograma</span></div>
+  <p class="sub">A consultoria deverá propor um cronograma contendo: início estimado &middot; duração de cada fase &middot; marcos de validação &middot; dependências &middot; período de homologação &middot; entrada em produção &middot; operação assistida. <b>Recomenda-se execução em fases com aprovação formal ao final de cada etapa.</b></p>
+
+  <div class="divider"><span>Propriedade intelectual e continuidade</span></div>
+  <div class="callout callout--danger"><span class="ico">!</span><div><b>Tudo é da KINTO</b><p>Todo código-fonte, documentação, regras, modelos de dados, scripts, configurações e artefatos produzidos no projeto deverão ser <b>entregues à KINTO</b>. A solução não deverá depender exclusivamente de componentes proprietários da consultoria sem prévia aprovação; eventuais componentes licenciados deverão ter custos, condições e <b>impactos de substituição</b> claramente apresentados.</p></div></div>
+
+  <div class="divider"><span>Critérios de avaliação das propostas</span></div>
+  <div class="t-wrap"><table class="t"><thead><tr><th>ID</th><th>Critério</th></tr></thead><tbody>
+<tr><td><code>AVL-01</code></td><td>Aderência ao escopo</td></tr>
+<tr><td><code>AVL-02</code></td><td>Qualidade da arquitetura</td></tr>
+<tr><td><code>AVL-03</code></td><td>Experiência em AWS e Snowflake</td></tr>
+<tr><td><code>AVL-04</code></td><td>Experiência com integrações via API</td></tr>
+<tr><td><code>AVL-05</code></td><td>Experiência em dados e precificação</td></tr>
+<tr><td><code>AVL-06</code></td><td>Estratégia de qualidade e monitoramento</td></tr>
+<tr><td><code>AVL-07</code></td><td>Segurança</td></tr>
+<tr><td><code>AVL-08</code></td><td>Explicabilidade da solução</td></tr>
+<tr><td><code>AVL-09</code></td><td>Transferência de conhecimento</td></tr>
+<tr><td><code>AVL-10</code></td><td>Prazo</td></tr>
+<tr><td><code>AVL-11</code></td><td>Custo de implantação</td></tr>
+<tr><td><code>AVL-12</code></td><td>Custo recorrente</td></tr>
+<tr><td><code>AVL-13</code></td><td>Facilidade de manutenção</td></tr>
+<tr><td><code>AVL-14</code></td><td>Referências de projetos semelhantes</td></tr>
+</tbody></table></div>
+</section>
+</main>
+
+<!-- ====== FOOTER ====== -->
+<footer class="ftr">
+  <div class="ftr-signature">
+    <div class="sig-label">
+      <img class="logo-light" src="data:image/png;base64,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" alt="KINTO">
+      <small>Documento elaborado por</small>
+      <span class="seal">v1.0 · 19/08/2026 · Para revisão</span>
+    </div>
+    <div class="sig-author">
+      <div class="avatar">FR</div>
+      <div class="sig-info">
+        <b>Fabio A. B. Rodrigues</b>
+        <span>Arquiteto de Soluções e Dados · KINTO Brasil</span>
+      </div>
+    </div>
+    <div class="sig-contact">
+      <a href="mailto:k-frodrigues@kintomobility.com.br">k-frodrigues@kintomobility.com.br</a>
+      <span>#5211</span>
+    </div>
+  </div>
+  <div class="ftr-bottom">
+    <span>© 2026 KINTO Mobilidade Brasil — Documentação técnica</span>
+    <span class="confidencial">Interno · Confidencial</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Copiado ✓</div>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  document.querySelectorAll('.theme-toggle button').forEach(function(b){
+    b.addEventListener('click',function(){
+      root.classList.add('theme-switching');
+      root.setAttribute('data-theme',b.dataset.set);
+      setTimeout(function(){root.classList.remove('theme-switching')},60);
+    });
+  });
+  document.querySelectorAll('.tabs-nav button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.tabs-nav button').forEach(function(x){x.classList.remove('active')});
+      document.querySelectorAll('.tab-panel').forEach(function(x){x.classList.remove('active')});
+      b.classList.add('active');
+      var p=document.getElementById('tab-'+b.dataset.tab);
+      if(p)p.classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+  function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(function(){t.classList.remove('on')},1600);}
+  document.querySelectorAll('.code-head .copy').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var blk=btn.closest('.code-block');
+      var code=blk?blk.querySelector('.code-lines'):null;
+      var txt=code?code.innerText:'';
+      if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){toast('Copiado ✓')});}
+    });
+  });
+})();
+</script>
+</body>
+</html>

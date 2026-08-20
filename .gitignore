@@ -1,0 +1,41 @@
+# === Dependências ===
+node_modules/
+.venv/
+venv/
+
+# === Build / artefatos ===
+dist/
+dist-ssr/
+build/
+*.egg-info/
+
+# === Python ===
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# === Ambiente / segredos (nunca versionar credenciais) ===
+.env
+.env.*
+!.env.example
+
+# === Sistema operacional ===
+.DS_Store
+Thumbs.db
+
+# === Editores ===
+.idea/
+.vscode/
+*.swp
+
+# === Logs ===
+logs/
+*.log
+
+# === Projeto externo de referência (repositório próprio no GitHub da KINTO) ===
+kbr-nfms-admin-portal-main/
+kbr-nfms-admin-portal-main.zip
