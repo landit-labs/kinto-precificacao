@@ -1,0 +1,21 @@
+﻿Placa;Marca;Modelo;Versão;Ano;KM;Classe;Canal sugerido;Preço recomendado (R$);Confiança;Score de confiança;Alerta de qualidade de dados
+BRA2E19;Toyota;Corolla;XEi 2.0 Flex Aut.;2022;38000;Classe A;Retail;124700,00;Alta;95;Não
+FZC5D28;Toyota;Corolla;Altis Premium Hybrid;2023;24000;Classe A;Retail;157300,00;Alta;95;Não
+GHT2B47;Toyota;Corolla;GLi 1.8 Flex;2021;74000;Classe B;Retail;106000,00;Alta;95;Não
+KNT3E80;Toyota;Corolla Cross;XRE 2.0 Flex;2022;62000;Classe B;Retail;139800,00;Alta;95;Não
+PXV9A12;Toyota;Corolla Cross;XRX Hybrid;2023;30000;Classe A;Retail;173700,00;Alta;95;Não
+QRA7B65;Toyota;Hilux;SRX 4x4 Diesel Aut.;2022;88000;Classe C;Wholesale;255200,00;Alta;95;Não
+RTX4C09;Toyota;Hilux;SRV 4x4 Diesel;2021;118000;Classe C;Wholesale;223200,00;Alta;85;Não
+SBK8D73;Toyota;Hilux;SR 4x2 Diesel;2020;105000;Classe D;Wholesale;172200,00;Alta;85;Não
+TMA1E56;Toyota;Yaris;XLS 1.5 Aut.;2022;52000;Classe B;Retail;94500,00;Alta;95;Não
+UYS6A38;Toyota;Yaris;XL 1.5 Aut.;2021;58000;Classe B;Retail;82500,00;Alta;95;Não
+VDF3B91;Toyota;SW4;SRX Diamond 7L Diesel;2023;21000;Classe A;Retail;365600,00;Baixa;40;Sim
+WKR5C24;Toyota;SW4;SRX 7L Diesel;2021;96000;Classe B;Retail;316200,00;Alta;85;Não
+XLM8E67;Toyota;RAV4;SX Hybrid AWD;2021;67000;Não avaliado;Não definido;213600,00;Baixa;35;Sim
+YNP2A85;Honda;Civic;Touring 1.5 Turbo;2020;89000;Classe E;Wholesale;115600,00;Alta;85;Não
+ZQE7D13;Jeep;Compass;Longitude T270 Flex;2022;47000;Classe B;Retail;129800,00;Média;75;Sim
+BSV4E52;Volkswagen;T-Cross;Highline 1.4 TSI;2023;33000;Classe B;Retail;131300,00;Alta;95;Não
+CJH9B76;Chevrolet;Onix;Premier 1.0 Turbo;2022;45000;Classe C;Wholesale;84000,00;Média;65;Sim
+DKW6C31;Hyundai;HB20S;Platinum 1.0 TGDI;2023;41000;Classe E;Wholesale;74700,00;Alta;85;Não
+EPL1A98;Fiat;Toro;Volcano 2.0 Diesel 4x4;2022;76000;Classe B;Retail;140600,00;Baixa;40;Sim
+FMN3D44;Renault;Duster;Iconic 1.6 CVT;2021;83000;Classe D;Wholesale;86400,00;Alta;85;Não

@@ -39,3 +39,7 @@ logs/
 # === Projeto externo de referência (repositório próprio no GitHub da KINTO) ===
 kbr-nfms-admin-portal-main/
 kbr-nfms-admin-portal-main.zip
+
+# === Playwright (artefatos de execução) ===
+e2e/test-results/
+e2e/playwright-report/

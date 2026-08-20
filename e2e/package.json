@@ -1,0 +1,23 @@
+{
+  "name": "precificacao-e2e",
+  "version": "1.0.0",
+  "description": "Testes E2E (Playwright) do painel de precificação SDP #5211 — jornadas + verificações de segurança",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:jornadas": "playwright test --project=jornadas",
+    "test:seguranca": "playwright test --project=seguranca",
+    "relatorio:pdf": "node relatorio/gerar-pdf.mjs relatorio/relatorio.html ../zero-vulnerabilidades.pdf"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
+  },
+  "private": true
+}

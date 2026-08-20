@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Relatório de Verificação de Segurança — SDP #5211</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --teal: #00708d;
+    --teal-escuro: #00475a;
+    --tinta: #1d2b32;
+    --suave: #5b6b73;
+    --linha: #d9e2e6;
+    --fundo-suave: #f2f7f9;
+    --atencao: #8a5a00;
+    --atencao-fundo: #fdf4e3;
+    --ok: #1d6b40;
+    --ok-fundo: #e9f5ee;
+    --alerta-fundo: #fdecec;
+    --alerta: #a03030;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Lexend Deca', -apple-system, 'Segoe UI', system-ui, sans-serif;
+    color: var(--tinta);
+    font-size: 10.5px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  header.capa { border-bottom: 3px solid var(--teal); padding-bottom: 14px; margin-bottom: 18px; }
+  .marca { color: var(--teal); font-weight: 700; letter-spacing: 0.12em; font-size: 10px; text-transform: uppercase; }
+  h1 { font-size: 21px; font-weight: 600; margin: 6px 0 4px; color: var(--teal-escuro); line-height: 1.25; }
+  .meta { color: var(--suave); font-size: 10px; }
+  .meta strong { color: var(--tinta); font-weight: 500; }
+  h2 { font-size: 14px; color: var(--teal-escuro); font-weight: 600; margin: 22px 0 8px; border-left: 4px solid var(--teal); padding-left: 8px; }
+  h3 { font-size: 11.5px; font-weight: 600; margin: 14px 0 6px; }
+  p { margin: 6px 0; }
+  .caixa-escopo {
+    background: var(--atencao-fundo);
+    border: 1px solid #e8cf9b;
+    border-left: 5px solid var(--atencao);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 12px 0;
+  }
+  .caixa-escopo strong { color: var(--atencao); }
+  .caixa-escopo ul { margin: 6px 0 2px; padding-left: 18px; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 9.8px; }
+  th { background: var(--fundo-suave); color: var(--teal-escuro); text-align: left; font-weight: 600; }
+  th, td { border: 1px solid var(--linha); padding: 5px 8px; vertical-align: top; }
+  tr { page-break-inside: avoid; }
+  .pill { display: inline-block; border-radius: 20px; padding: 1px 9px; font-size: 9px; font-weight: 600; white-space: nowrap; }
+  .pill-ok { background: var(--ok-fundo); color: var(--ok); }
+  .pill-baixa { background: var(--atencao-fundo); color: var(--atencao); }
+  .pill-media { background: var(--alerta-fundo); color: var(--alerta); }
+  .pill-info { background: var(--fundo-suave); color: var(--suave); }
+  code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 9px; background: var(--fundo-suave); border-radius: 3px; padding: 0 3px; }
+  .grade-evidencias { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .evidencia { border: 1px solid var(--linha); border-radius: 6px; overflow: hidden; page-break-inside: avoid; }
+  .evidencia img { width: 100%; display: block; }
+  .evidencia figcaption { font-size: 9px; color: var(--suave); padding: 5px 8px; border-top: 1px solid var(--linha); background: var(--fundo-suave); }
+  .conclusao { background: var(--fundo-suave); border: 1px solid var(--linha); border-left: 5px solid var(--teal); border-radius: 6px; padding: 10px 14px; margin: 12px 0; }
+  .rodape-nota { color: var(--suave); font-size: 9px; margin-top: 18px; border-top: 1px solid var(--linha); padding-top: 8px; }
+  .quebra { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<header class="capa">
+  <div class="marca">KINTO · Pricing · Plate-by-Plate Pricing</div>
+  <h1>Relatório de Verificação de Segurança — Plataforma de Precificação de Seminovos (SDP #5211)</h1>
+  <p class="meta">
+    <strong>Data:</strong> 20/08/2026 &nbsp;·&nbsp;
+    <strong>Ambiente:</strong> mock local de demonstração — frontend React/Vite (dev server, <code>http://localhost:5173</code>) e API FastAPI 100% mockada (<code>http://localhost:8010</code>) &nbsp;·&nbsp;
+    <strong>Método:</strong> testes E2E automatizados (Playwright/Chromium) + auditoria de dependências
+  </p>
+</header>
+
+<div class="caixa-escopo">
+  <strong>Escopo e limitações — leia antes de usar este relatório.</strong>
+  <ul>
+    <li>Verificação <strong>automatizada</strong> de segurança sobre uma aplicação <strong>mockada</strong>, executando em <strong>ambiente de desenvolvimento local</strong> (Vite dev server + Uvicorn). Nenhum resultado aqui representa a postura de segurança de um ambiente de produção.</li>
+    <li><strong>Não é um pentest profissional</strong>: não cobre infraestrutura, rede, nuvem (AWS/Snowflake), engenharia social, nem análise manual aprofundada de lógica de negócio.</li>
+    <li>A aplicação <strong>não possui autenticação por design</strong> (mock de demonstração da Fase 6, Alternativa A) — autenticação/autorização estão <strong>fora de escopo</strong> desta verificação e são obrigatórias antes de qualquer exposição real.</li>
+    <li>Superfície testada: painel analítico (4 jornadas), inputs de busca/filtros, 4 endpoints da API mock, CORS, cabeçalhos HTTP e dependências declaradas.</li>
+  </ul>
+</div>
+
+<h2>1. Jornadas E2E executadas</h2>
+<p>Executadas em Chromium <em>headed</em> com câmera lenta (3 s por ação) para acompanhamento visual. Suíte em <code>e2e/tests/jornadas.spec.ts</code>; cada teste é independente e somente leitura (aplicação sem mutação de estado — nada a preparar ou limpar).</p>
+<table>
+  <thead><tr><th style="width:24%">Jornada</th><th>O que foi verificado</th><th style="width:11%">Resultado</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>A — Visão executiva</strong></td>
+      <td>Carga do painel; 3 KPIs (veículos no inventário, preço recomendado médio, com alerta/não avaliados); gráficos executivos por classe e por canal; gráfico "Recomendado vs. FIPE — últimos 4 meses"; tabela de inventário populada. Console sem erros.</td>
+      <td><span class="pill pill-ok">PASSOU</span></td>
+    </tr>
+    <tr>
+      <td><strong>B — Busca e detalhe</strong></td>
+      <td>Busca por placa parcial "BRA" (RF-F6-A-02); abertura do offcanvas do veículo BRA2E19 com seções Precificação, Percentis de mercado (faixas), Comparáveis, Classificação e canal e Histórico; fechamento do painel. Console sem erros.</td>
+      <td><span class="pill pill-ok">PASSOU</span></td>
+    </tr>
+    <tr>
+      <td><strong>C — Classe "Não avaliado"</strong></td>
+      <td>Filtro de classe <code>NAO_AVALIADO</code>; veículo XLM8E67 (avaria nula) exibido como "Não avaliado" e <strong>nunca</strong> como Classe A — regra da spec "avaria nula não é zero" respeitada na UI e na API. Console sem erros.</td>
+      <td><span class="pill pill-ok">PASSOU</span></td>
+    </tr>
+    <tr>
+      <td><strong>D — Exportação CSV</strong></td>
+      <td>Download <code>inventario-precificacao-2026-08-20.csv</code> com cabeçalho, separador ";" e dados do inventário filtrado (RF-F6-A-10). Console sem erros.</td>
+      <td><span class="pill pill-ok">PASSOU</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>2. Verificações de segurança</h2>
+<p>Suíte em <code>e2e/tests/seguranca.spec.ts</code> (8 testes, todos executados). Resultados reais observados:</p>
+<table>
+  <thead><tr><th style="width:26%">Checagem</th><th style="width:13%">Resultado</th><th>Evidência resumida</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>XSS nos inputs do painel (busca por placa)</td>
+      <td><span class="pill pill-ok">SEM FALHA</span></td>
+      <td>Payloads <code>&lt;script&gt;</code>, <code>"&gt;&lt;img onerror&gt;</code> e quebra de aspas digitados na busca: nada executou (sem <code>alert</code>, sem <code>window.__xss</code>), nenhum nó injetado no DOM. React escapa a saída; conteúdo aparece apenas como texto no estado vazio.</td>
+    </tr>
+    <tr>
+      <td>Validação de entrada da API (query params malformados e payloads de injeção)</td>
+      <td><span class="pill pill-ok">SEM FALHA</span></td>
+      <td><code>placa</code> com payload XSS (&gt;7 chars), <code>ano=DROP TABLE…</code>, <code>classe=A' OR '1'='1</code>, <code>page=-1</code>, <code>page_size=99999</code> → todos <strong>400</strong> com envelope padronizado <code>{"error":{code,message,details}}</code> (padrão api-land). Sem stack trace, sem caminhos de arquivo, sem detalhes internos.</td>
+    </tr>
+    <tr>
+      <td>Path traversal na rota de placa</td>
+      <td><span class="pill pill-ok">SEM FALHA</span></td>
+      <td><code>/api/inventario/..%2F..%2Fetc%2Fpasswd</code> e variantes → 404/400 no envelope padrão; nenhum conteúdo de arquivo ou vazamento.</td>
+    </tr>
+    <tr>
+      <td>Recurso inexistente</td>
+      <td><span class="pill pill-ok">SEM FALHA</span></td>
+      <td><code>GET /api/inventario/ZZZ9Z99</code> → 404 com <code>error.code</code>/<code>error.message</code>, sem detalhe interno.</td>
+    </tr>
+    <tr>
+      <td>Contrato de resposta sem campos inesperados/sensíveis</td>
+      <td><span class="pill pill-ok">SEM FALHA</span></td>
+      <td>Chaves do inventário conferidas campo a campo contra o contrato esperado; nenhum campo extra ou sensível na resposta.</td>
+    </tr>
+    <tr>
+      <td>CORS restrito à origem do painel</td>
+      <td><span class="pill pill-ok">SEM FALHA</span></td>
+      <td>Origem <code>http://localhost:5173</code> → permitida; origem maliciosa → sem <code>Access-Control-Allow-Origin</code> (inclusive no preflight OPTIONS). Allowlist explícita em <code>backend/app/main.py</code>.</td>
+    </tr>
+    <tr>
+      <td>Console do navegador nas 4 jornadas</td>
+      <td><span class="pill pill-ok">SEM FALHA</span></td>
+      <td>Nenhum erro de console ou <code>pageerror</code>; nenhum dado sensível logado.</td>
+    </tr>
+    <tr>
+      <td>Cabeçalhos de segurança (dev server)</td>
+      <td><span class="pill pill-info">INFORMATIVO</span></td>
+      <td>Vite e API sem CSP, <code>X-Content-Type-Options</code>, <code>X-Frame-Options</code>, HSTS ou <code>Referrer-Policy</code>; API expõe <code>Server: uvicorn</code>. Sem <code>X-Powered-By</code> em ambos. <strong>Servidor de desenvolvimento não representa produção</strong> — ver achados I-1/I-2.</td>
+    </tr>
+    <tr>
+      <td>Dependências do frontend — <code>npm audit --omit=dev</code></td>
+      <td><span class="pill pill-ok">0 VULNS</span></td>
+      <td>Dependências de produção (react 19.2.8, react-dom 19.2.8): <strong>0 vulnerabilidades</strong> conhecidas.</td>
+    </tr>
+    <tr>
+      <td>Dependências do backend — <code>pip-audit</code> sobre <code>requirements.txt</code></td>
+      <td><span class="pill pill-media">10 AVISOS</span></td>
+      <td><strong>10 vulnerabilidades conhecidas em 4 pacotes</strong> (starlette 0.46.2 ×7, click 8.1.8, python-dotenv 1.2.1, pytest 8.3.5). Detalhamento na seção 3.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="quebra">3. Achados</h2>
+<p>Nenhuma vulnerabilidade <strong>explorável na aplicação</strong> foi encontrada no escopo testado (XSS, injeção via API, path traversal, CORS, vazamento de erro). A auditoria de dependências e a revisão dos cabeçalhos, porém, produziram os achados abaixo — <strong>o relatório os registra integralmente</strong>:</p>
+
+<h3>3.1 Dependências do backend com CVEs conhecidos (pip-audit)</h3>
+<table>
+  <thead><tr><th style="width:16%">Pacote</th><th style="width:20%">Advisories</th><th style="width:10%">Severidade*</th><th>Contexto neste app e recomendação</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>starlette 0.46.2</strong><br/>(runtime, base do FastAPI)</td>
+      <td>PYSEC-2026-161, -248, -249, -1941, -1942, -2280, -2281</td>
+      <td><span class="pill pill-media">Média</span></td>
+      <td>Advisories cobrem DoS via header <code>Range</code> em <code>FileResponse</code>, limites de multipart não aplicados, reconstrução de URL sem validar <code>Host</code>, SSRF em <code>StaticFiles</code> (Windows) e dispatch de método em <code>HTTPEndpoint</code>. A API mock atual (JSON puro, sem upload, sem <code>FileResponse</code>/<code>StaticFiles</code>) <em>não exercita</em> os vetores principais, mas o pacote roda em produção do framework. <strong>Recomendação:</strong> atualizar FastAPI/starlette para versão com correções (starlette ≥ 1.3.1) antes de qualquer evolução além do mock.</td>
+    </tr>
+    <tr>
+      <td><strong>click 8.1.8</strong><br/>(transitivo, via uvicorn)</td>
+      <td>PYSEC-2026-2132</td>
+      <td><span class="pill pill-baixa">Baixa</span></td>
+      <td>Injeção de comando em <code>click.edit()</code> — função não utilizada pelo app. <strong>Recomendação:</strong> subir para ≥ 8.3.3 na próxima atualização de dependências.</td>
+    </tr>
+    <tr>
+      <td><strong>python-dotenv 1.2.1</strong><br/>(transitivo, via uvicorn)</td>
+      <td>PYSEC-2026-2270</td>
+      <td><span class="pill pill-baixa">Baixa</span></td>
+      <td><code>set_key()</code>/<code>unset_key()</code> seguem symlink ao reescrever <code>.env</code> — app apenas lê variáveis. <strong>Recomendação:</strong> subir para ≥ 1.2.2.</td>
+    </tr>
+    <tr>
+      <td><strong>pytest 8.3.5</strong><br/>(dependência de teste)</td>
+      <td>PYSEC-2026-1845</td>
+      <td><span class="pill pill-baixa">Baixa</span></td>
+      <td>DoS/escalação local via diretórios previsíveis em <code>/tmp</code> em máquinas UNIX compartilhadas; só afeta ambiente de desenvolvimento. <strong>Recomendação:</strong> subir para ≥ 9.0.3.</td>
+    </tr>
+  </tbody>
+</table>
+<p class="meta">* Severidade avaliada no contexto deste app mockado local; em produção a exposição de starlette deve ser reavaliada.</p>
+
+<h3>3.2 Observações informativas e de hardening</h3>
+<table>
+  <thead><tr><th style="width:8%">ID</th><th style="width:12%">Severidade</th><th>Observação e recomendação</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>I-1</td>
+      <td><span class="pill pill-info">Informativa</span></td>
+      <td><strong>Cabeçalhos de segurança ausentes</strong> (CSP, <code>X-Content-Type-Options</code>, <code>X-Frame-Options</code>, HSTS, <code>Referrer-Policy</code>) no Vite dev server e na API. Esperado em ambiente de desenvolvimento; para produção, servir o build atrás de um edge/proxy que aplique esses cabeçalhos.</td>
+    </tr>
+    <tr>
+      <td>I-2</td>
+      <td><span class="pill pill-info">Informativa</span></td>
+      <td><strong>API expõe <code>Server: uvicorn</code></strong> — divulgação menor de tecnologia. Em produção, suprimir/normalizar o header no proxy reverso.</td>
+    </tr>
+    <tr>
+      <td>H-1</td>
+      <td><span class="pill pill-baixa">Baixa (hardening)</span></td>
+      <td><strong>Exportação CSV sem neutralização de fórmulas</strong>: <code>frontend/src/utils/csv.ts</code> escapa aspas/separadores, mas não prefixa campos iniciados por <code>=</code>, <code>+</code>, <code>-</code> ou <code>@</code> (CSV/fórmula injection ao abrir no Excel). Não explorável com o mock atual (dados controlados), mas os dados reais virão de fornecedores externos de anúncios — recomenda-se neutralizar antes da integração real. <em>Reportado sem alteração de código, conforme o processo.</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>4. Conclusão</h2>
+<div class="conclusao">
+  <p><strong>No escopo testado</strong> — jornadas do painel, inputs de busca/filtros, 4 endpoints da API mock, CORS e tratamento de erros — <strong>nenhuma vulnerabilidade explorável foi encontrada na aplicação</strong>: os payloads de XSS e injeção foram neutralizados pelo escape do React e pela validação de tipos/limites da API, os erros seguem envelope padronizado sem vazamento interno e o CORS restringe corretamente a origem.</p>
+  <p><strong>O relatório, contudo, não é "zero achados":</strong> a auditoria de dependências identificou <strong>10 vulnerabilidades conhecidas em 4 pacotes do backend</strong> (severidade média no starlette 0.46.2; baixa nos demais, com vetores não exercitados pelo mock) e 3 observações informativas/de hardening (I-1, I-2, H-1). Recomenda-se atualizar as dependências apontadas e aplicar os itens de hardening antes de qualquer evolução do mock para ambiente real.</p>
+  <p class="meta">Reforço final: verificação automatizada em aplicação mockada e ambiente local de desenvolvimento, sem autenticação por design — não substitui pentest profissional nem avaliação de infraestrutura/produção.</p>
+</div>
+
+<h2 class="quebra">5. Evidências das jornadas</h2>
+<p>Capturas geradas pela execução em <code>e2e/evidencias/</code> (arquivos completos no repositório).</p>
+<div class="grade-evidencias">
+  <figure class="evidencia" style="margin:0">
+    <img src="../evidencias/jornada-a-painel.png" alt="Painel com KPIs e gráficos executivos" />
+    <figcaption>Jornada A — KPIs, gráficos por classe/canal e "Recomendado vs. FIPE" (jornada-a-painel.png)</figcaption>
+  </figure>
+  <figure class="evidencia" style="margin:0">
+    <img src="../evidencias/jornada-b-detalhe.png" alt="Offcanvas de detalhe do veículo BRA2E19" />
+    <figcaption>Jornada B — detalhe do BRA2E19: precificação, faixas e comparáveis (jornada-b-detalhe.png)</figcaption>
+  </figure>
+  <figure class="evidencia" style="margin:0">
+    <img src="../evidencias/jornada-c-nao-avaliado.png" alt="Filtro classe Não avaliado com XLM8E67" />
+    <figcaption>Jornada C — XLM8E67 como "Não avaliado", nunca Classe A (jornada-c-nao-avaliado.png)</figcaption>
+  </figure>
+  <figure class="evidencia" style="margin:0">
+    <img src="../evidencias/jornada-d-export-csv.png" alt="Exportação CSV do inventário" />
+    <figcaption>Jornada D — exportação CSV do inventário filtrado (jornada-d-export-csv.png)</figcaption>
+  </figure>
+</div>
+
+<p class="rodape-nota">
+  Gerado automaticamente pela suíte E2E (Playwright/Chromium) em 20/08/2026 · Suítes: <code>e2e/tests/jornadas.spec.ts</code> (4 testes, headed, slowMo 3 s) e <code>e2e/tests/seguranca.spec.ts</code> (8 testes) · Auditorias: <code>npm audit --omit=dev</code> (frontend) e <code>pip-audit -r backend/requirements.txt</code> · Referências da spec: RF-F6-A-01..11, RF-F5-RS-01..14, regra "avaria nula não é zero".
+</p>
+
+</body>
+</html>

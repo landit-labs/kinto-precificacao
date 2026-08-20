@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Relatório de Testes — SDP #5211</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --teal: #00708d;
+    --teal-escuro: #00475a;
+    --tinta: #1d2b32;
+    --suave: #5b6b73;
+    --linha: #d9e2e6;
+    --fundo-suave: #f2f7f9;
+    --atencao: #8a5a00;
+    --atencao-fundo: #fdf4e3;
+    --ok: #1d6b40;
+    --ok-fundo: #e9f5ee;
+    --alerta-fundo: #fdecec;
+    --alerta: #a03030;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Lexend Deca', -apple-system, 'Segoe UI', system-ui, sans-serif;
+    color: var(--tinta);
+    font-size: 10.5px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  header.capa { border-bottom: 3px solid var(--teal); padding-bottom: 14px; margin-bottom: 18px; }
+  .marca { color: var(--teal); font-weight: 700; letter-spacing: 0.12em; font-size: 10px; text-transform: uppercase; }
+  h1 { font-size: 21px; font-weight: 600; margin: 6px 0 4px; color: var(--teal-escuro); line-height: 1.25; }
+  .meta { color: var(--suave); font-size: 10px; }
+  .meta strong { color: var(--tinta); font-weight: 500; }
+  h2 { font-size: 14px; color: var(--teal-escuro); font-weight: 600; margin: 22px 0 8px; border-left: 4px solid var(--teal); padding-left: 8px; }
+  h3 { font-size: 11.5px; font-weight: 600; margin: 14px 0 6px; }
+  p { margin: 6px 0; }
+  .caixa-escopo {
+    background: var(--atencao-fundo);
+    border: 1px solid #e8cf9b;
+    border-left: 5px solid var(--atencao);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 12px 0;
+  }
+  .caixa-escopo strong { color: var(--atencao); }
+  .caixa-escopo ul { margin: 6px 0 2px; padding-left: 18px; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 9.8px; }
+  th { background: var(--fundo-suave); color: var(--teal-escuro); text-align: left; font-weight: 600; }
+  th, td { border: 1px solid var(--linha); padding: 5px 8px; vertical-align: top; }
+  tr { page-break-inside: avoid; }
+  tr.subtotal td { background: var(--fundo-suave); font-weight: 600; }
+  .pill { display: inline-block; border-radius: 20px; padding: 1px 9px; font-size: 9px; font-weight: 600; white-space: nowrap; }
+  .pill-ok { background: var(--ok-fundo); color: var(--ok); }
+  .pill-baixa { background: var(--atencao-fundo); color: var(--atencao); }
+  .pill-media { background: var(--alerta-fundo); color: var(--alerta); }
+  .pill-info { background: var(--fundo-suave); color: var(--suave); }
+  code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 9px; background: var(--fundo-suave); border-radius: 3px; padding: 0 3px; }
+  .grade-evidencias { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .evidencia { border: 1px solid var(--linha); border-radius: 6px; overflow: hidden; page-break-inside: avoid; }
+  .evidencia img { width: 100%; display: block; }
+  .evidencia figcaption { font-size: 9px; color: var(--suave); padding: 5px 8px; border-top: 1px solid var(--linha); background: var(--fundo-suave); }
+  .conclusao { background: var(--fundo-suave); border: 1px solid var(--linha); border-left: 5px solid var(--teal); border-radius: 6px; padding: 10px 14px; margin: 12px 0; }
+  .rodape-nota { color: var(--suave); font-size: 9px; margin-top: 18px; border-top: 1px solid var(--linha); padding-top: 8px; }
+  .quebra { page-break-before: always; }
+  .placar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0; }
+  .placar-item { border: 1px solid var(--linha); border-radius: 6px; padding: 8px 12px; text-align: center; }
+  .placar-item .num-grande { font-size: 20px; font-weight: 700; color: var(--teal-escuro); display: block; }
+  .placar-item .rotulo { font-size: 9px; color: var(--suave); text-transform: uppercase; letter-spacing: 0.06em; }
+  .placar-item.ok .num-grande { color: var(--ok); }
+  .placar-item.falha .num-grande { color: var(--alerta); }
+  .placar-item.bloq .num-grande { color: var(--atencao); }
+</style>
+</head>
+<body>
+
+<header class="capa">
+  <div class="marca">KINTO · Pricing · Plate-by-Plate Pricing</div>
+  <h1>Relatório de Testes — Plataforma de Precificação de Seminovos (SDP #5211)</h1>
+  <p class="meta">
+    <strong>Data:</strong> 20/08/2026 &nbsp;·&nbsp;
+    <strong>Ambiente:</strong> mock local de demonstração (dev) — frontend React/Vite (dev server, <code>http://localhost:5173</code>) e API FastAPI 100% mockada (<code>http://localhost:8010</code>) &nbsp;·&nbsp;
+    <strong>Método:</strong> pirâmide completa — pytest (backend) + vitest (frontend) + lint/build + E2E Playwright/Chromium <em>headed</em> com câmera lenta (3 s por ação)
+  </p>
+</header>
+
+<div class="caixa-escopo">
+  <strong>Escopo e limitações — leia antes de usar este relatório.</strong>
+  <ul>
+    <li>Validação sobre uma aplicação <strong>mockada</strong> (Fase 6, Alternativa A — painel analítico), executando em <strong>ambiente de desenvolvimento local</strong> (Vite dev server + Uvicorn). Os resultados <strong>não representam</strong> o comportamento de um ambiente de produção.</li>
+    <li>A aplicação <strong>não possui autenticação por design</strong> (mock de demonstração) — autenticação/autorização estão fora de escopo e são obrigatórias antes de qualquer exposição real.</li>
+    <li>Dados 100% sintéticos (20 veículos; série "Recomendado vs. FIPE" ilustrativa) — não há integração real com fornecedores, AWS ou Snowflake nesta fase.</li>
+    <li>A suíte de <strong>segurança</strong> (8 verificações + auditorias de dependências) foi executada hoje (20/08/2026) e está reportada em documento próprio (<code>e2e/relatorio/relatorio.html</code> / <code>zero-vulnerabilidades.pdf</code>); este relatório a referencia sem re-executá-la.</li>
+  </ul>
+</div>
+
+<h2>1. Resumo executivo</h2>
+<div class="placar">
+  <div class="placar-item"><span class="num-grande">45</span><span class="rotulo">Testes executados</span></div>
+  <div class="placar-item ok"><span class="num-grande">44</span><span class="rotulo">Passaram</span></div>
+  <div class="placar-item falha"><span class="num-grande">1</span><span class="rotulo">Falharam</span></div>
+  <div class="placar-item bloq"><span class="num-grande">0</span><span class="rotulo">Bloqueados</span></div>
+</div>
+<table>
+  <thead><tr><th>Suíte</th><th>Comando</th><th style="width:9%">Testes</th><th style="width:9%">Passou</th><th style="width:9%">Falhou</th><th style="width:11%">Bloqueado</th></tr></thead>
+  <tbody>
+    <tr><td>Backend — unitários e integração (pytest)</td><td><code>cd backend &amp;&amp; python -m pytest -v</code></td><td>23</td><td>23</td><td>0</td><td>0</td></tr>
+    <tr><td>Frontend — agregações (vitest)</td><td><code>cd frontend &amp;&amp; npx vitest run</code></td><td>13</td><td>13</td><td>0</td><td>0</td></tr>
+    <tr><td>Frontend — qualidade estática (lint + build)</td><td><code>npm run lint</code> · <code>npm run build</code></td><td>2</td><td>2</td><td>0</td><td>0</td></tr>
+    <tr><td>E2E — jornadas no navegador (Playwright)</td><td><code>cd e2e &amp;&amp; npx playwright test --project=jornadas</code></td><td>7</td><td>6</td><td>1</td><td>0</td></tr>
+    <tr class="subtotal"><td colspan="2">Total geral</td><td>45</td><td>44</td><td>1</td><td>0</td></tr>
+  </tbody>
+</table>
+<p class="meta">Suíte de segurança (8 verificações E2E + <code>npm audit</code> + <code>pip-audit</code>): executada em 20/08/2026 e reportada em relatório próprio — resultados resumidos na seção 5.</p>
+
+<h2>2. Resultados individuais por suíte</h2>
+
+<h3>2.1 Backend — pytest (23 testes · 23 passaram · 0 falharam · 0 bloqueados)</h3>
+<p>Python 3.9.6 · pytest 8.3.5 · execução em 0,16 s · <code>backend/tests/</code>.</p>
+<table>
+  <thead><tr><th style="width:58%">Teste</th><th>Valida</th><th style="width:11%">Status</th></tr></thead>
+  <tbody>
+    <tr><td><code>test_api.py::test_inventario_lista_todos</code></td><td>RF-F6-A-01 — inventário completo</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_pesquisa_por_placa_parcial</code></td><td>RF-F6-A-02 — busca parcial por placa</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_filtro_por_classe_e_canal</code></td><td>RF-F6-A-03 — filtros combinados</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_filtro_nao_avaliado_traz_veiculo_com_avaria_nula</code></td><td>"Avaria nula ≠ zero" no filtro</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_todas_as_classes_estao_representadas</code></td><td>Cobertura A–E + não avaliado no mock</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_filtro_classe_invalida_retorna_400_padrao_api_land</code></td><td>Validação de entrada, envelope de erro</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_detalhe_completo_e_coerente</code></td><td>RF-F6-A-04..08 — detalhe coerente</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_detalhe_avaria_nula_tem_motivo_e_alerta</code></td><td>RF-F6-A-09 — motivo/alerta no não avaliado</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_detalhe_baixa_confianca_poucos_comparaveis</code></td><td>RF-F6-A-08 — confiança baixa</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_placa_inexistente_retorna_404_padrao_api_land</code></td><td>404 padronizado</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_historico_ordenado_e_ultimo_evento_reflete_estado_atual</code></td><td>RF-F6-A-11 — histórico consistente</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_historico_placa_inexistente_404</code></td><td>404 padronizado no histórico</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_api.py::test_filtros_disponiveis</code></td><td>RF-F6-A-03 — catálogo de filtros</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_classificacao.py::test_avaria_nula_nao_e_zero_e_nao_classifica</code></td><td><strong>Regra crítica:</strong> avaria nula ≠ zero (RF-F5-RS)</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_classificacao.py::test_classe_a_avaria_zero_e_km_ate_10mil</code></td><td>Classe A — limites da tabela da spec</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_classificacao.py::test_avaria_zero_com_km_alto_cai_para_b</code></td><td>Sequencialidade A→B</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_classificacao.py::test_classe_b_limites</code></td><td>Classe B — limites</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_classificacao.py::test_classe_c_independe_do_km</code></td><td>Classe C — independência do KM</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_classificacao.py::test_avaria_baixa_mas_km_acima_de_20mil_e_classe_c</code></td><td>Sequencialidade B→C</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_classificacao.py::test_classe_d_ate_40_por_cento_da_fipe</code></td><td>Classe D — teto 40% FIPE</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_classificacao.py::test_classe_e_acima_de_40_por_cento_da_fipe</code></td><td>Classe E — acima de 40% FIPE</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_classificacao.py::test_km_medio_anual[40000-2022-2026-10000]</code></td><td>KM médio anual — veículo de 4 anos</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>test_classificacao.py::test_km_medio_anual[30000-2026-2026-30000]</code></td><td>KM médio anual — ano corrente</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+  </tbody>
+</table>
+
+<h3 class="quebra">2.2 Frontend — vitest (13 testes · 13 passaram · 0 falharam · 0 bloqueados)</h3>
+<p>vitest 4.1.11 · <code>frontend/src/utils/agregacoes.test.ts</code> · execução em 76 ms.</p>
+<table>
+  <thead><tr><th style="width:66%">Teste</th><th style="width:11%">Status</th></tr></thead>
+  <tbody>
+    <tr><td><code>contarPorClasse</code> › lista vazia: devolve as 6 categorias em ordem fixa, todas com quantidade 0</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>contarPorClasse</code> › <strong>classe nula não é zero nem classe A</strong>: vai para "Não avaliado", categoria própria</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>contarPorClasse</code> › invariante: soma das quantidades é exatamente o total de itens</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>contarPorClasse</code> › classe sem veículo aparece com 0 (nunca omitida do resultado)</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>somarValorPorCanal</code> › lista vazia: devolve as 3 categorias em ordem fixa, com 0 veículos e R$ 0</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>somarValorPorCanal</code> › canal nulo vai para "Não definido", nunca somado a Retail/Wholesale</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>somarValorPorCanal</code> › invariantes: somas de quantidade e de valor batem com os itens de entrada</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>somarValorPorCanal</code> › um único veículo: canal dele concentra 100% do valor</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>variacaoPercentualPeriodo</code> › série vazia ou ponto único: incalculável devolve <code>null</code>, nunca 0</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>variacaoPercentualPeriodo</code> › base zero: denominador inválido devolve <code>null</code> (não Infinity nem 0)</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>variacaoPercentualPeriodo</code> › queda: sinal negativo com denominador no primeiro valor</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>variacaoPercentualPeriodo</code> › alta: sinal positivo</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>variacaoPercentualPeriodo</code> › série estável: variação 0 (calculável, diferente de <code>null</code>)</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+  </tbody>
+</table>
+
+<h3>2.3 Frontend — qualidade estática (2 verificações · 2 passaram)</h3>
+<table>
+  <thead><tr><th style="width:30%">Verificação</th><th>Resultado observado</th><th style="width:11%">Status</th></tr></thead>
+  <tbody>
+    <tr><td><code>npm run lint</code> (oxlint 1.75)</td><td>Nenhum aviso ou erro; saída limpa, código de saída 0.</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+    <tr><td><code>npm run build</code> (tsc -b + vite build)</td><td>Type-check sem erros; build de produção em 65 ms — 37 módulos, <code>index.html</code> 0,76 kB, CSS 16,65 kB, JS 226,00 kB (gzip 68,70 kB).</td><td><span class="pill pill-ok">PASSOU</span></td></tr>
+  </tbody>
+</table>
+
+<h3 class="quebra">2.4 E2E — jornadas Playwright/Chromium (7 testes · 6 passaram · 1 falharam · 0 bloqueados)</h3>
+<p>Chromium <em>headed</em> com <code>slowMo: 3000</code> (3 s por ação, para acompanhamento visual na tela), viewport 1440×900 (375×812 na jornada G) · <code>e2e/tests/jornadas.spec.ts</code> · servidores de desenvolvimento preservados (Vite 5173 e API 8010 verificados antes da execução). As jornadas E, F e G foram <strong>adicionadas nesta validação</strong>, evoluindo a suíte existente. Todos os testes monitoram o console do navegador — qualquer erro de console reprova o teste.</p>
+<table>
+  <thead><tr><th style="width:22%">Jornada</th><th>O que foi verificado</th><th style="width:11%">Status</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>A — Visão executiva</strong></td>
+      <td>Carga do painel; 3 KPIs (RF-F6-A-01); gráficos executivos por classe e por canal; gráfico "Recomendado vs. FIPE — últimos 4 meses"; tabela de inventário populada; console sem erros.</td>
+      <td><span class="pill pill-ok">PASSOU</span></td>
+    </tr>
+    <tr>
+      <td><strong>B — Busca e detalhe</strong></td>
+      <td>Busca parcial "BRA" (RF-F6-A-02); offcanvas do BRA2E19 com seções Precificação, Percentis, Comparáveis, Classificação e canal e Histórico (RF-F6-A-04..09, RF-F6-A-11); fechamento do painel.</td>
+      <td><span class="pill pill-ok">PASSOU</span></td>
+    </tr>
+    <tr>
+      <td><strong>C — Classe "Não avaliado"</strong></td>
+      <td>Filtro <code>NAO_AVALIADO</code>; XLM8E67 (avaria nula) exibido como "Não avaliado" e nunca como Classe A — regra da spec "avaria nula ≠ zero" na UI.</td>
+      <td><span class="pill pill-ok">PASSOU</span></td>
+    </tr>
+    <tr>
+      <td><strong>D — Exportação CSV</strong></td>
+      <td>Download <code>inventario-precificacao-2026-08-20.csv</code> com cabeçalho, separador ";" e dados (RF-F6-A-10).</td>
+      <td><span class="pill pill-ok">PASSOU</span></td>
+    </tr>
+    <tr>
+      <td><strong>E — Invariantes numéricas <span class="pill pill-info">NOVO</span></strong></td>
+      <td>No detalhe do BRA2E19, <strong>lendo os valores renderizados na tela</strong>: percentis ordenados (P10 ≤ P25 ≤ mediana ≤ P75 ≤ P90); preço recomendado dentro da faixa operacional; faixa conservadora contida na operacional (RF-F6-A-04/05/07).</td>
+      <td><span class="pill pill-ok">PASSOU</span></td>
+    </tr>
+    <tr>
+      <td><strong>F — Coerência classe ↔ canal <span class="pill pill-info">NOVO</span></strong></td>
+      <td>Nas 20 linhas da tabela: Classe A/B → canal Retail; C/D/E → Wholesale; "Não avaliado" → sem canal ("Não definido") — regra de canal do modelo (RF-F5-RS).</td>
+      <td><span class="pill pill-ok">PASSOU</span></td>
+    </tr>
+    <tr>
+      <td><strong>G — Responsividade 375 px <span class="pill pill-info">NOVO</span></strong></td>
+      <td>Viewport 375×812: página sem scroll horizontal; gráfico FIPE em modo compacto; tabela larga rolando no próprio container. <strong>Falhou no passo 1</strong> — esperado: excesso de largura ≤ 0 px; obtido: <strong>195 px de scroll horizontal</strong> (<code>scrollWidth</code> 570 &gt; <code>clientWidth</code> 375). Causa raiz e recomendação no achado <strong>B-1</strong> (seção 4). As checagens de modo compacto não chegaram a ser avaliadas (o teste reprova no primeiro desvio).</td>
+      <td><span class="pill pill-media">FALHOU</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>3. Regras de negócio da spec verificadas</h2>
+<table>
+  <thead><tr><th style="width:34%">Regra (requisito)</th><th>Onde foi verificada</th><th style="width:11%">Resultado</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Avaria nula ≠ zero</strong> — "Não avaliado" nunca vira Classe A nem entra em médias (RF-F5-RS)</td>
+      <td>pytest (<code>test_avaria_nula_nao_e_zero_e_nao_classifica</code>, <code>test_detalhe_avaria_nula_tem_motivo_e_alerta</code>), vitest (<code>contarPorClasse</code>/<code>somarValorPorCanal</code> com nulos) e E2E jornada C (XLM8E67 na UI).</td>
+      <td><span class="pill pill-ok">CONFORME</span></td>
+    </tr>
+    <tr>
+      <td><strong>Classificação A–E sequencial</strong> conforme a tabela da spec (RF-F5-RS)</td>
+      <td>pytest — 8 testes de <code>classificacao.py</code> cobrindo limites A/B/C/D/E e sequencialidade (A→B por KM, B→C por KM, D/E por % FIPE).</td>
+      <td><span class="pill pill-ok">CONFORME</span></td>
+    </tr>
+    <tr>
+      <td><strong>Canal coerente com a classe</strong> — A/B Retail, C–E Wholesale (RF-F5-RS)</td>
+      <td>pytest (<code>test_filtro_por_classe_e_canal</code>) e E2E jornada F — as 20 linhas da tabela conferidas uma a uma na UI.</td>
+      <td><span class="pill pill-ok">CONFORME</span></td>
+    </tr>
+    <tr>
+      <td><strong>Invariantes numéricas da precificação</strong> — percentis ordenados; recomendado na faixa operacional; conservadora contida (RF-F6-A-04/05/07, RF-F5-RS)</td>
+      <td>pytest (<code>test_detalhe_completo_e_coerente</code>) e E2E jornada E — valores lidos da tela renderizada, não da API.</td>
+      <td><span class="pill pill-ok">CONFORME</span></td>
+    </tr>
+    <tr>
+      <td><strong>Funcionalidades do painel</strong> RF-F6-A-01..11 (inventário, busca, filtros, detalhe, faixas, referências, percentis, confiança, alertas, exportação, histórico)</td>
+      <td>13 testes de API (pytest) + jornadas A–E (UI); exportação CSV na jornada D; histórico nas jornadas B e pytest.</td>
+      <td><span class="pill pill-ok">CONFORME</span></td>
+    </tr>
+    <tr>
+      <td><strong>Variação incalculável ≠ 0</strong> — série vazia/base zero devolve <code>null</code>, nunca 0% (mesmo princípio de "nulo ≠ zero")</td>
+      <td>vitest — 5 testes de <code>variacaoPercentualPeriodo</code>.</td>
+      <td><span class="pill pill-ok">CONFORME</span></td>
+    </tr>
+    <tr>
+      <td><strong>Formatação pt-BR</strong> — R$, separador de milhar, datas dd/mm/aaaa</td>
+      <td>E2E jornadas A/B/E — os parsers dos testes só aceitam moeda pt-BR válida renderizada; CSV com separador ";" (jornada D).</td>
+      <td><span class="pill pill-ok">CONFORME</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="quebra">4. Bugs e achados</h2>
+<p>A validação encontrou <strong>1 bug novo</strong> (B-1, causa da única falha do placar) e mantém <strong>1 pendência conhecida</strong> do relatório de segurança (H-1). Conforme o processo de QA, <strong>nenhum código de aplicação foi alterado</strong> — os achados são reportados com reprodução e recomendação para os especialistas donos do código (frontend-react).</p>
+<table>
+  <thead><tr><th style="width:8%">ID</th><th style="width:13%">Severidade</th><th>Achado, reprodução e recomendação</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>B-1</td>
+      <td><span class="pill pill-media">Média (mobile)</span></td>
+      <td><strong>Scroll horizontal em viewport de 375 px causado pelas tabelas acessíveis (<code>sr-only</code>) dos gráficos executivos</strong> — detectado pela jornada G (nova). <em>Reprodução:</em> abrir <code>http://localhost:5173</code> em viewport 375×812; <code>document.documentElement.scrollWidth</code> = 556–570 px (excesso de ~195 px) e a página rola de fato para o lado (<code>window.scrollX</code> chega a 181 px após <code>scrollTo(500, 0)</code>). <em>Causa raiz diagnosticada:</em> o padrão <code>.sr-only</code> de <code>frontend/src/index.css</code> (<code>width: 1px; overflow: hidden; clip: rect(0,0,0,0)</code>) <strong>não funciona em elementos <code>display: table</code></strong> — tabelas tratam <code>width</code> como mínimo e ignoram <code>overflow</code>, então as tabelas alternativas dos gráficos (521 px e 471 px de largura, em <code>GraficosExecutivos.tsx</code>) ficam invisíveis mas estendem a área rolável. <em>Verificação da hipótese:</em> aplicando <code>display: block</code> às <code>table.sr-only</code> em runtime, o <code>scrollWidth</code> volta a 375 px. <em>Recomendação:</em> acrescentar <code>display: block</code> à regra <code>.sr-only</code> (ou envolver cada tabela em um <code>&lt;div class="sr-only"&gt;</code>). Desktop (1440 px) não é afetado. Evidência: <code>e2e/evidencias/jornada-g-responsivo-375-falha.png</code> e trace Playwright em <code>e2e/test-results/</code>.</td>
+    </tr>
+    <tr>
+      <td>H-1</td>
+      <td><span class="pill pill-baixa">Baixa (hardening)</span></td>
+      <td><strong>Pendência conhecida — CSV/fórmula injection na exportação</strong> (reportada no Relatório de Verificação de Segurança de 20/08/2026, achado H-1): <code>frontend/src/utils/csv.ts</code> escapa aspas e separadores, mas não neutraliza campos iniciados por <code>=</code>, <code>+</code>, <code>-</code> ou <code>@</code> ao gerar o CSV (RF-F6-A-10). <em>Reprodução:</em> um valor de célula vindo dos dados começando com <code>=</code> seria interpretado como fórmula ao abrir o arquivo no Excel. Não explorável com o mock atual (dados controlados), mas os dados reais virão de fornecedores externos de anúncios. <em>Recomendação:</em> prefixar esses campos (ex.: apóstrofo) antes da integração real. Permanece <strong>em aberto</strong> — nenhuma correção foi aplicada, conforme o processo (QA reporta, não corrige).</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>5. Suíte de segurança (referência — executada em 20/08/2026)</h2>
+<p>A verificação de segurança <strong>não foi re-executada</strong> nesta validação por já ter sido executada e reportada hoje. Resumo do relatório próprio (<code>e2e/relatorio/relatorio.html</code>, PDF <code>zero-vulnerabilidades.pdf</code>): 8 verificações E2E (XSS, validação de entrada da API, path traversal, 404 padronizado, contrato de resposta, CORS, console, cabeçalhos) — <strong>nenhuma vulnerabilidade explorável na aplicação</strong> no escopo testado; <code>npm audit --omit=dev</code> com 0 vulnerabilidades no frontend; <code>pip-audit</code> com <strong>10 vulnerabilidades conhecidas em 4 pacotes do backend</strong> (starlette 0.46.2 — média; click, python-dotenv, pytest — baixas, vetores não exercitados pelo mock) e 3 observações (I-1 cabeçalhos, I-2 <code>Server: uvicorn</code>, H-1 CSV) — todas permanecem como pendências de atualização/hardening antes de evoluir o mock para ambiente real.</p>
+
+<h2>6. Conclusão</h2>
+<div class="conclusao">
+  <p><strong>45 testes executados em 4 suítes: 44 passaram, 1 falhou, 0 bloqueados.</strong> Nenhuma suíte foi pulada. As regras de negócio críticas da spec estão conformes em todas as camadas verificadas: "avaria nula ≠ zero" (backend, agregações do frontend e UI), classificação A–E sequencial, canal coerente com a classe nas 20 linhas do inventário, invariantes numéricas da precificação lidas da tela renderizada (percentis ordenados, recomendado na faixa operacional, conservadora contida) e formatação pt-BR.</p>
+  <p><strong>A única falha é real e está registrada integralmente:</strong> a jornada G (responsividade, nova nesta validação) reprovou por scroll horizontal em 375 px — bug B-1, com causa raiz diagnosticada (padrão <code>.sr-only</code> ineficaz em tabelas) e correção de uma linha recomendada ao time de frontend. O defeito não afeta o uso em desktop (1440 px), resolução das jornadas A–F. Permanecem também as pendências do relatório de segurança (atualização de dependências do backend e hardening H-1/I-1/I-2). Recomenda-se corrigir B-1 e re-executar a jornada G antes de considerar a interface pronta para demonstração em dispositivos móveis.</p>
+  <p class="meta">Reforço final: validação sobre aplicação mockada em ambiente local de desenvolvimento, sem autenticação por design — não substitui homologação em ambiente integrado nem os testes das fases de dados reais (TST da spec).</p>
+</div>
+
+<h2 class="quebra">7. Evidências das jornadas E2E</h2>
+<p>Capturas geradas pela execução de 20/08/2026 em <code>e2e/evidencias/</code>.</p>
+<div class="grade-evidencias">
+  <figure class="evidencia" style="margin:0">
+    <img src="../evidencias/jornada-a-painel.png" alt="Painel com KPIs e gráficos executivos" />
+    <figcaption>Jornada A — KPIs, gráficos por classe/canal e "Recomendado vs. FIPE" (jornada-a-painel.png)</figcaption>
+  </figure>
+  <figure class="evidencia" style="margin:0">
+    <img src="../evidencias/jornada-b-detalhe.png" alt="Offcanvas de detalhe do veículo BRA2E19" />
+    <figcaption>Jornada B — detalhe do BRA2E19: precificação, faixas e comparáveis (jornada-b-detalhe.png)</figcaption>
+  </figure>
+  <figure class="evidencia" style="margin:0">
+    <img src="../evidencias/jornada-c-nao-avaliado.png" alt="Filtro classe Não avaliado com XLM8E67" />
+    <figcaption>Jornada C — XLM8E67 como "Não avaliado", nunca Classe A (jornada-c-nao-avaliado.png)</figcaption>
+  </figure>
+  <figure class="evidencia" style="margin:0">
+    <img src="../evidencias/jornada-d-export-csv.png" alt="Exportação CSV do inventário" />
+    <figcaption>Jornada D — exportação CSV do inventário filtrado (jornada-d-export-csv.png)</figcaption>
+  </figure>
+  <figure class="evidencia" style="margin:0">
+    <img src="../evidencias/jornada-e-invariantes.png" alt="Detalhe do veículo com percentis e faixas" />
+    <figcaption>Jornada E (nova) — invariantes numéricas lidas da tela do BRA2E19 (jornada-e-invariantes.png)</figcaption>
+  </figure>
+  <figure class="evidencia" style="margin:0">
+    <img src="../evidencias/jornada-f-classe-canal.png" alt="Tabela do inventário com classes e canais" />
+    <figcaption>Jornada F (nova) — coerência classe ↔ canal nas 20 linhas (jornada-f-classe-canal.png)</figcaption>
+  </figure>
+  <figure class="evidencia" style="margin:0">
+    <img src="../evidencias/jornada-g-responsivo-375-falha.png" alt="Painel em viewport de 375 pixels no momento da falha" />
+    <figcaption>Jornada G (nova) — FALHOU: captura automática no momento da detecção do scroll horizontal em 375 px (jornada-g-responsivo-375-falha.png)</figcaption>
+  </figure>
+</div>
+
+<p class="rodape-nota">
+  Gerado automaticamente pela validação completa de QA em 20/08/2026 · Suítes: <code>backend/tests</code> (pytest, 23), <code>frontend/src/utils/agregacoes.test.ts</code> (vitest, 13), lint + build (2), <code>e2e/tests/jornadas.spec.ts</code> (Playwright, 7 — headed, slowMo 3 s) · Segurança referenciada: <code>e2e/tests/seguranca.spec.ts</code> + auditorias (relatório de 20/08/2026) · Referências da spec: RF-F6-A-01..11, RF-F5-RS-01..14, regra "avaria nula não é zero".
+</p>
+
+</body>
+</html>
