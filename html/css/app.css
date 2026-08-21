@@ -1,0 +1,1097 @@
+/*
+ * index.css — estilos do painel analítico no padrão KINTO / NFMS Admin.
+ * Variáveis vêm de styles/tokens.css (importado antes deste arquivo em main.tsx).
+ * Referência: design/adaptacao-kinto-painel.md (spec do ux-ui).
+ */
+
+:root {
+  color-scheme: light;
+  font-family: var(--theme-fonts);
+  font-size: var(--font-size);
+  line-height: var(--p-line-height);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bodybg-color);
+  color: var(--font-color);
+}
+
+/* ---------- Shell NFMS (topbar + breadcrumb + conteúdo + footer) ---------- */
+
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--conteudo-padding-x);
+  background: var(--cor-superficie);
+  border-bottom: 1px solid var(--borda-suave);
+  z-index: 1001;
+}
+
+.topbar-marca {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.topbar-emblem {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: var(--cor-superficie);
+  border: 1px solid var(--borda-suave);
+  border-radius: 12px;
+}
+
+.topbar-emblem img {
+  width: 28px;
+  height: 28px;
+}
+
+.topbar-titulo {
+  margin: 0;
+  font-size: var(--h4-font-size);
+  font-weight: 400;
+  color: var(--cor-texto-suave);
+}
+
+.topbar-titulo span {
+  font-weight: 600;
+  color: var(--cor-texto);
+}
+
+.app-breadcrumbs {
+  position: fixed;
+  top: var(--breadcrumb-top);
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.75rem var(--conteudo-padding-x);
+  list-style: none;
+  background: var(--cor-superficie);
+  z-index: 1000;
+  font-size: 14px;
+}
+
+.app-breadcrumbs li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.app-breadcrumbs li + li::before {
+  content: '/';
+  color: var(--kinto-secondary);
+}
+
+.app-breadcrumbs li.active {
+  color: var(--kinto-primary);
+}
+
+.app-content {
+  flex: 1;
+  padding: 112px var(--conteudo-padding-x) 47px;
+  min-height: 100vh;
+}
+
+.container-fluid {
+  width: 100%;
+}
+
+.footer-container {
+  padding: 1rem var(--conteudo-padding-x);
+  font-size: 0.875rem;
+  color: var(--cor-texto-suave);
+}
+
+.footer-container p {
+  margin: 0;
+}
+
+.texto-suave {
+  color: var(--cor-texto-suave);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Foco visível (acessibilidade) ---------- */
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--cor-foco);
+  outline-offset: 2px;
+}
+
+/* ---------- Card (base NFMS) ---------- */
+
+.card {
+  background: var(--cor-superficie);
+  border: 1px solid var(--borda-suave);
+  border-radius: var(--app-border-radius);
+  box-shadow: var(--box-shadow);
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  padding: 1.125rem 1.5rem;
+  border-bottom: 1px solid var(--borda-suave);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.card-header h5 {
+  margin: 0;
+  font-size: var(--h5-font-size);
+  font-weight: 600;
+}
+
+.card-header p {
+  margin: 0.25rem 0 0;
+  color: var(--cor-texto-suave);
+}
+
+.card-body {
+  padding: 1.125rem 1.5rem;
+}
+
+.card-body.sem-padding {
+  padding: 0;
+}
+
+/* ---------- KPI cards ---------- */
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.kpi-card {
+  margin-bottom: 0;
+}
+
+.kpi-card .card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.kpi-valor {
+  margin: 0 0 0.25rem;
+  font-size: var(--h4-font-size);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-rotulo {
+  margin: 0;
+  color: var(--cor-texto-suave);
+}
+
+.kpi-chip {
+  flex-shrink: 0;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.kpi-chip svg {
+  width: 22px;
+  height: 22px;
+}
+
+.kpi-chip-primary {
+  background: rgba(var(--primary), 0.1);
+  color: var(--kinto-primary);
+}
+
+.kpi-chip-success {
+  background: rgba(var(--success), 0.1);
+  color: var(--kinto-success);
+}
+
+.kpi-chip-warning {
+  background: rgba(var(--warning), 0.1);
+  color: var(--kinto-warning);
+}
+
+/* ---------- Gráficos executivos (visão do portfólio, acima da tabela) ----------
+   Cores = mapeamento semântico fixo dos badges (§4.5 da spec de design):
+   A/B success (B em variante clara + traço da família), C/D warning (idem),
+   E danger, Não avaliado warning tracejado; Retail primary, Wholesale dark.
+   Paridade sem cor: rótulo + valor em toda barra/segmento e tabela sr-only. */
+
+.graficos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.grafico-card {
+  margin-bottom: 0;
+}
+
+/* Barras horizontais por classe */
+
+.grafico-barras {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.grafico-barra-linha {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.grafico-barra-rotulo {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+}
+
+.grafico-barra-trilho {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.grafico-barra {
+  height: 18px;
+  flex-shrink: 1;
+  min-width: 2px;
+  border-radius: 0 4px 4px 0; /* ponta de dado arredondada; base reta no eixo zero */
+}
+
+.grafico-barra-valor {
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--cor-texto);
+}
+
+.grafico-barra-classe-a {
+  background: var(--kinto-success);
+}
+
+.grafico-barra-classe-b {
+  background: rgba(var(--success), 0.35);
+  box-shadow: inset 0 0 0 1px var(--kinto-success); /* variante "outline" de B, como no badge */
+}
+
+.grafico-barra-classe-c {
+  background: var(--kinto-warning);
+}
+
+.grafico-barra-classe-d {
+  background: rgba(var(--warning), 0.35);
+  box-shadow: inset 0 0 0 1px var(--kinto-warning);
+}
+
+.grafico-barra-classe-e {
+  background: var(--kinto-danger);
+}
+
+.grafico-barra-nao-avaliado {
+  background: rgba(var(--warning), 0.12);
+  border: 1px dashed rgba(var(--warning), 1); /* nunca aparência de classe (nula ≠ zero) */
+}
+
+/* Valor total + barra empilhada por canal */
+
+.grafico-total-rotulo {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--kinto-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.grafico-total-valor {
+  margin: 2px 0 12px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--kinto-primary-escuro);
+}
+
+.grafico-pilha {
+  display: flex;
+  gap: 2px; /* respiro de superfície entre segmentos (sem borda de separação) */
+  height: 20px;
+  margin: 0 0 12px;
+}
+
+.grafico-segmento {
+  min-width: 4px;
+}
+
+.grafico-pilha .grafico-segmento:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.grafico-pilha .grafico-segmento:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.grafico-pilha .grafico-segmento:only-child {
+  border-radius: 4px;
+}
+
+.grafico-canal-retail {
+  background: var(--kinto-primary);
+}
+
+.grafico-canal-wholesale {
+  background: var(--kinto-dark);
+}
+
+.grafico-canal-nao-definido {
+  background: rgba(var(--secondary), 0.25);
+  border: 1px dashed var(--kinto-secondary); /* canal indefinido: mesmo recurso tracejado */
+}
+
+.grafico-legenda {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.grafico-legenda li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.grafico-legenda-swatch {
+  align-self: center;
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.grafico-legenda-rotulo {
+  font-weight: 600;
+  color: var(--cor-texto);
+}
+
+.grafico-legenda-detalhe {
+  color: var(--cor-texto-suave);
+}
+
+.grafico-legenda-valor {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  color: var(--cor-texto);
+}
+
+.grafico-legenda-percentual {
+  color: var(--cor-texto-suave);
+}
+
+/* Linhas: Recomendado (assunto, primary sólida) vs. FIPE (contexto, secondary
+   tracejada) — distinção por traço + rótulo direto, nunca só cor. */
+
+.grafico-card-largo {
+  grid-column: 1 / -1;
+}
+
+.grafico-linhas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.grafico-linhas-grade {
+  stroke: var(--kinto-light);
+  stroke-width: 1;
+}
+
+.grafico-linhas-tick {
+  font-size: 11px;
+  fill: var(--cor-texto-suave);
+  font-variant-numeric: tabular-nums;
+}
+
+.grafico-linha-recomendado {
+  fill: none;
+  stroke: var(--kinto-primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.grafico-linha-fipe {
+  fill: none;
+  stroke: var(--kinto-secondary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 6 4;
+}
+
+/* Marcadores com anel de superfície (2px) para cruzarem as linhas legíveis */
+
+.grafico-ponto-recomendado {
+  fill: var(--kinto-primary);
+  stroke: var(--cor-superficie);
+  stroke-width: 2;
+}
+
+.grafico-ponto-fipe {
+  fill: var(--kinto-secondary);
+  stroke: var(--cor-superficie);
+  stroke-width: 2;
+}
+
+.grafico-ponto-alvo {
+  fill: transparent; /* alvo de hover maior que o marcador (tooltip nativo) */
+}
+
+.grafico-linhas-rotulo {
+  font-size: 11.5px;
+  font-weight: 600;
+  fill: var(--cor-texto);
+}
+
+.grafico-linhas-rotulo-valor {
+  font-weight: 400;
+  fill: var(--cor-texto-suave);
+  font-variant-numeric: tabular-nums;
+}
+
+.grafico-tendencias {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 28px;
+}
+
+.grafico-tendencias li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.grafico-chave-linha {
+  flex-shrink: 0;
+  width: 20px;
+  border-top-width: 2px;
+}
+
+.grafico-chave-recomendado {
+  border-top-style: solid;
+  border-top-color: var(--kinto-primary);
+}
+
+.grafico-chave-fipe {
+  border-top-style: dashed;
+  border-top-color: var(--kinto-secondary);
+}
+
+.grafico-tendencias li {
+  flex-wrap: wrap; /* em telas estreitas o delta quebra de linha sem overflow */
+}
+
+.grafico-tendencia-ultimo {
+  color: var(--cor-texto);
+  font-variant-numeric: tabular-nums;
+}
+
+.grafico-tendencia {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.grafico-tendencia-alta {
+  color: var(--texto-aa-success);
+}
+
+.grafico-tendencia-queda {
+  color: var(--texto-aa-danger);
+}
+
+.grafico-tendencia-neutra {
+  color: var(--cor-texto-suave);
+}
+
+.grafico-nota-eixo {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  color: var(--cor-texto-suave);
+}
+
+/* ---------- Barra de filtros (card padrão) ---------- */
+
+.barra-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+  background: var(--cor-superficie);
+  border: 1px solid var(--borda-suave);
+  border-radius: var(--app-border-radius);
+  padding: 1.125rem 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--box-shadow);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 140px;
+}
+
+.campo-busca {
+  min-width: 200px;
+}
+
+.campo label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+}
+
+.campo input,
+.campo select {
+  padding: 7px 10px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--app-border-radius);
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+}
+
+.acoes-filtros {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* ---------- Botões ---------- */
+
+.botao {
+  padding: 8px 14px;
+  border-radius: var(--app-border-radius);
+  border: 1px solid transparent;
+  font-family: inherit;
+  font-size: var(--btn-font-size);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--app-transition);
+}
+
+.botao:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.botao-primario {
+  background: var(--kinto-primary);
+  color: #fff;
+}
+
+.botao-primario:not(:disabled):hover {
+  background: var(--kinto-primary-escuro);
+}
+
+.botao-secundario {
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  border-color: var(--cor-borda);
+}
+
+.botao-secundario:not(:disabled):hover {
+  background: var(--light-gray);
+}
+
+.botao-fechar {
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 8px 10px;
+  border-radius: var(--app-border-radius);
+}
+
+.botao-fechar:hover {
+  background: var(--light-gray);
+}
+
+.botao-placa {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--kinto-primary);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.botao-placa:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Tabelas (padrão denso NFMS) ---------- */
+
+.tabela-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.4rem 1.25rem;
+  border-bottom: 1px solid var(--bs-table-border-color);
+  vertical-align: middle;
+}
+
+thead th {
+  background: var(--light-gray);
+  color: var(--kinto-secondary);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  position: sticky;
+  top: 0;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.centro {
+  text-align: center;
+}
+
+.valor-destaque {
+  font-weight: 600;
+  color: var(--kinto-dark);
+}
+
+.linha-clicavel {
+  cursor: pointer;
+}
+
+.linha-clicavel:hover {
+  background: rgba(var(--primary), 0.06);
+}
+
+.linha-selecionada {
+  background: rgba(var(--primary), 0.12);
+}
+
+.linha-selecionada.linha-clicavel:hover {
+  background: rgba(var(--primary), 0.12);
+}
+
+.tabela-secundaria,
+.tabela-percentis {
+  font-size: 0.83rem;
+}
+
+.tabela-percentis {
+  margin-top: 4px;
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--app-border-radius);
+}
+
+.resumo-resultados {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+}
+
+/* ---------- Badges (padrão text-light-* + textos AA) ---------- */
+
+.badge {
+  display: inline-block;
+  padding: 0.3em 0.9em;
+  border-radius: var(--app-border-radius);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Classe A/B = família success (B em outline); C/D = warning (D em outline); E = danger */
+
+.badge-classe-a {
+  background: rgba(var(--success), 0.1);
+  color: var(--texto-aa-success);
+}
+
+.badge-classe-b {
+  background: transparent;
+  border: 1px solid var(--texto-aa-success);
+  color: var(--texto-aa-success);
+}
+
+.badge-classe-c {
+  background: rgba(var(--warning), 0.1);
+  color: var(--texto-aa-warning);
+}
+
+.badge-classe-d {
+  background: transparent;
+  border: 1px solid var(--texto-aa-warning);
+  color: var(--texto-aa-warning);
+}
+
+.badge-classe-e {
+  background: rgba(var(--danger), 0.1);
+  color: var(--texto-aa-danger);
+}
+
+/* Avaria nula ≠ classe: tint warning com borda tracejada, nunca aparência de classe */
+
+.badge-nao-avaliado {
+  background: rgba(var(--warning), 0.1);
+  border: 1px dashed rgba(var(--warning), 1);
+  color: var(--texto-aa-warning);
+}
+
+.badge-confianca-alto {
+  background: rgba(var(--success), 0.1);
+  color: var(--texto-aa-success);
+}
+
+.badge-confianca-medio {
+  background: rgba(var(--warning), 0.1);
+  color: var(--texto-aa-warning);
+}
+
+.badge-confianca-baixo {
+  background: rgba(var(--danger), 0.1);
+  color: var(--texto-aa-danger);
+}
+
+.badge-canal-retail {
+  background: rgba(var(--primary), 0.1);
+  color: var(--kinto-primary);
+}
+
+.badge-canal-wholesale {
+  background: rgba(var(--dark), 0.1);
+  color: var(--kinto-dark);
+}
+
+.badge-impacto-positivo {
+  background: rgba(var(--success), 0.1);
+  color: var(--texto-aa-success);
+}
+
+.badge-impacto-negativo {
+  background: rgba(var(--danger), 0.1);
+  color: var(--texto-aa-danger);
+}
+
+.badge-impacto-neutro {
+  background: rgba(var(--secondary), 0.12);
+  color: var(--kinto-dark);
+}
+
+.alerta-icone {
+  color: var(--texto-aa-warning);
+  font-size: 1.1rem;
+}
+
+/* ---------- Estados (carregando, erro, vazio) ---------- */
+
+.estado {
+  padding: 20px;
+  border-radius: var(--app-border-radius);
+  margin: 8px 0;
+}
+
+.estado-carregando {
+  background: var(--cor-superficie);
+  border: 1px solid var(--borda-suave);
+  box-shadow: var(--box-shadow);
+  color: var(--cor-texto-suave);
+}
+
+.estado-erro {
+  background: rgba(var(--danger), 0.08);
+  border: 1px solid rgba(var(--danger), 0.25);
+  color: var(--texto-aa-danger);
+}
+
+.estado-erro p {
+  margin: 0 0 10px;
+}
+
+.estado-vazio {
+  background: var(--cor-superficie);
+  border: 1px dashed var(--cor-borda);
+  color: var(--cor-texto-suave);
+  text-align: center;
+}
+
+/* ---------- Avisos ---------- */
+
+.aviso {
+  border-radius: var(--app-border-radius);
+  padding: 12px 16px;
+  margin: 12px 0;
+}
+
+.aviso h4 {
+  margin: 0 0 6px;
+  font-size: 0.9rem;
+}
+
+.aviso ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.aviso-atencao {
+  background: rgba(var(--warning), 0.1);
+  border: 1px solid rgba(var(--warning), 0.4);
+  color: var(--texto-aa-warning);
+}
+
+.aviso-alerta {
+  background: rgba(var(--danger), 0.08);
+  border: 1px solid rgba(var(--danger), 0.25);
+  color: var(--texto-aa-danger);
+}
+
+/* ---------- Painel de detalhe (estilo offcanvas NFMS) ---------- */
+
+.painel-detalhe {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(720px, 100%);
+  background: var(--cor-superficie);
+  border-left: 1px solid var(--borda-suave);
+  box-shadow: -8px 0 24px rgba(var(--dark), 0.18);
+  display: flex;
+  flex-direction: column;
+  z-index: 1050;
+}
+
+.painel-detalhe-cabecalho {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 1.125rem 1.5rem;
+  border-bottom: 1px solid var(--borda-suave);
+}
+
+.painel-detalhe-cabecalho h2 {
+  margin: 0;
+  font-size: var(--h5-font-size);
+  font-weight: 600;
+}
+
+.painel-detalhe-cabecalho p {
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+}
+
+.painel-detalhe-conteudo {
+  overflow-y: auto;
+  padding: 8px 1.5rem 2rem;
+}
+
+.secao {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--borda-suave);
+}
+
+.secao:last-child {
+  border-bottom: none;
+}
+
+.secao h3 {
+  margin: 0 0 12px;
+  font-size: var(--h6-font-size);
+  font-weight: 600;
+}
+
+.secao h4 {
+  margin: 16px 0 8px;
+  font-size: 0.88rem;
+  color: var(--cor-texto-suave);
+}
+
+.contador {
+  color: var(--cor-texto-suave);
+  font-weight: 400;
+}
+
+/* ---------- Preço recomendado (informação dominante do detalhe) ---------- */
+
+.preco-recomendado {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: rgba(var(--primary), 0.08);
+  border: 1px solid rgba(var(--primary), 0.25);
+  border-radius: var(--app-border-radius);
+  padding: 12px 16px;
+  margin: 0 0 16px;
+}
+
+.preco-recomendado-rotulo {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--kinto-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.preco-recomendado-valor {
+  font-size: 1.6rem;
+  color: var(--kinto-primary-escuro);
+}
+
+/* ---------- Listas de definição ---------- */
+
+.lista-definicoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px 24px;
+  margin: 0;
+}
+
+.lista-definicoes dt {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.lista-definicoes dd {
+  margin: 2px 0 0;
+  font-size: 0.92rem;
+}
+
+/* ---------- Fatores de explicação ---------- */
+
+.lista-fatores {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fator {
+  display: flex;
+  gap: 12px;
+  align-items: start;
+  padding: 10px 12px;
+  border: 1px solid var(--borda-suave);
+  border-radius: var(--app-border-radius);
+  background: var(--light-gray);
+}
+
+.fator .badge {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.fator p {
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+}
+
+/* ---------- Responsivo ---------- */
+
+@media (max-width: 900px) {
+  .kpi-grid,
+  .graficos-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --conteudo-padding-x: 1rem;
+  }
+
+  .acoes-filtros {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .painel-detalhe {
+    width: 100%;
+  }
+}
