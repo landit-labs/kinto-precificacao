@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<!--
+  Plataforma de Precificação de Seminovos (SDP #5211) · capa do portal publicado
+  em GitHub Pages. Gerada a partir do template oficial (skill docs-html) e da
+  identidade em .docs-brand.yml.
+
+  Os links para painel/, requisitos/ e relatorios/ só resolvem no site montado
+  por .github/workflows/pages.yml — abrindo este arquivo direto do disco eles
+  apontam para pastas que não existem aqui.
+-->
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>SDP #5211 — Portal da Plataforma de Precificação</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/docs.css">
+<link rel="stylesheet" href="assets/brand.css">
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-brand">
+    <a class="hdr-logo" href="index.html" aria-label="Plataforma de Precificação de Seminovos">
+      <img class="logo-light" src="assets/logo-claro.png" alt="KINTO" />
+      <img class="logo-dark" src="assets/logo-escuro.png" alt="KINTO" />
+    </a>
+    <div class="div"></div>
+    <div class="doc-meta">
+      <b>SDP #5211 · Portal</b>
+      <small>Plataforma de Precificação de Seminovos</small>
+    </div>
+  </div>
+  <div class="hdr-center">
+    <span class="hdr-tag">Uso interno</span>
+  </div>
+  <div class="hdr-actions">
+    <div class="theme-toggle" role="group" aria-label="Tema">
+      <button data-set="light" aria-label="Claro">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <button data-set="dark" aria-label="Escuro">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+
+  <aside class="side">
+    <nav>
+      <h6>SDP #5211</h6>
+      <ul>
+        <li><a href="front-matter.html">Front Matter</a></li>
+        <li><a href="index.html" class="active">Portal (capa)</a></li>
+      </ul>
+      <h6>Publicado</h6>
+      <ul>
+        <li><a href="painel/">Painel de Precificação</a></li>
+        <li><a href="requisitos/">Especificação</a></li>
+        <li><a href="relatorios/testes.html">Relatório de testes</a></li>
+        <li><a href="relatorios/seguranca.html">Relatório de segurança</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="content doc">
+
+    <nav class="crumbs">
+      <span class="now">portal</span>
+    </nav>
+
+    <span class="doc-eyebrow">KINTO · Chamado SDP #5211</span>
+    <h1 class="doc-h1">Plataforma de Inteligência e Precificação de Veículos Seminovos</h1>
+    <p class="doc-lead">
+      Ponto único de acesso aos artefatos navegáveis do chamado: a especificação de
+      requisitos, o painel do time de Precificação e os relatórios de validação.
+      Tudo estático — nada aqui consulta banco, API ou Snowflake.
+    </p>
+
+    <h2 class="doc-h2" id="artefatos">Artefatos</h2>
+    <div class="rel-grid">
+      <a class="rel-card" href="painel/">
+        <span class="ic-circle"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+        <span class="cat">Fase 6 · Interface</span>
+        <h5>Painel de Precificação</h5>
+        <p>Inventário, busca por placa, detalhe do veículo, comparáveis e exportação CSV. Dados fictícios.</p>
+        <span class="arrow">Abrir  →</span>
+      </a>
+      <a class="rel-card" href="requisitos/">
+        <span class="ic-circle"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span>
+        <span class="cat">Fonte de verdade</span>
+        <h5>Especificação SDP #5211</h5>
+        <p>As 6 fases, com requisitos rastreáveis (RF, RNF, ENT, TST, PRE, ORC).</p>
+        <span class="arrow">Abrir  →</span>
+      </a>
+      <a class="rel-card" href="relatorios/testes.html">
+        <span class="ic-circle is-success"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+        <span class="cat">Qualidade</span>
+        <h5>Relatório de testes</h5>
+        <p>Suíte E2E em Playwright, com capturas de cada jornada validada.</p>
+        <span class="arrow">Abrir  →</span>
+      </a>
+      <a class="rel-card" href="relatorios/seguranca.html">
+        <span class="ic-circle is-success"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+        <span class="cat">Qualidade</span>
+        <h5>Relatório de segurança</h5>
+        <p>Varredura de vulnerabilidades das dependências e do código.</p>
+        <span class="arrow">Abrir  →</span>
+      </a>
+    </div>
+
+    <h2 class="doc-h2" id="fora">O que não está aqui</h2>
+    <div class="callout callout--info">
+      <div class="ico">i</div>
+      <div>
+        <b>O painel React e o backend não são publicados</b>
+        <p>
+          A aplicação de verdade — <code>frontend/</code> em React + Vite sobre
+          <code>backend/</code> em FastAPI — depende de uma API em execução e não funciona
+          num site estático. Para rodá-la, use <code>iniciar-app.bat</code> na raiz do
+          repositório. O painel aqui publicado é o porte 1:1 dessa tela em HTML puro, com
+          um snapshot dos mesmos dados.
+        </p>
+      </div>
+    </div>
+
+    <h2 class="doc-h2" id="acesso">Acesso e sigilo</h2>
+    <div class="callout callout--warning">
+      <div class="ico">!</div>
+      <div>
+        <b>Link aberto, fora das buscas</b>
+        <p>
+          O repositório é público, então o GitHub Pages não pede autenticação: quem tiver o
+          endereço entra. O que existe é <code>robots.txt</code> e <code>noindex</code> em
+          todas as páginas, o que mantém o portal fora dos buscadores. Se o conteúdo precisar
+          de acesso controlado, o caminho é repositório privado com Pages privado (plano pago)
+          ou outro host — não este.
+        </p>
+      </div>
+    </div>
+
+    <h2 class="doc-h2" id="dados">Sobre os dados</h2>
+    <ul>
+      <li>Todo o inventário do painel é <b>fictício</b>, gerado por <code>backend/app/data.py</code> — nenhuma placa, cliente ou preço real.</li>
+      <li>A regra da spec vale também na demonstração: <b>avaria nula não é zero</b>. O veículo sem avaliação aparece como "Não avaliado", com alerta — nunca como classe A.</li>
+      <li>Os números dos relatórios são de execuções reais da suíte; as capturas em <code>/evidencias/</code> são as daquela execução.</li>
+    </ul>
+
+    <footer class="ds-footer">
+      <div class="ftr-signature">
+        <div class="sig-label">
+          <img class="ftr-logo logo-light" src="assets/logo-claro.png" alt="KINTO" />
+          <img class="ftr-logo logo-dark" src="assets/logo-escuro.png" alt="KINTO" />
+          <small>Portal do chamado</small>
+          <span class="seal">SDP #5211</span>
+        </div>
+      </div>
+      <div class="ftr-bottom">
+        <span>KINTO · SDP #5211 · 2026 · uso interno</span>
+        <span>Precificação de Seminovos</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <aside class="toc">
+    <h6>Neste artigo</h6>
+    <ul>
+      <li><a href="#artefatos" class="active">Artefatos</a></li>
+      <li><a href="#fora">O que não está aqui</a></li>
+      <li><a href="#acesso">Acesso e sigilo</a></li>
+      <li><a href="#dados">Sobre os dados</a></li>
+    </ul>
+  </aside>
+</div>
+
+<div class="toast" id="toast">Copiado ✓</div>
+
+<script src="assets/docs.js"></script>
+</body>
+</html>

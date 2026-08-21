@@ -1,0 +1,88 @@
+# ============================================================================
+# IDENTIDADE DO PROJETO PARA A DOCUMENTAÇÃO HTML
+# ----------------------------------------------------------------------------
+# Lido pela skill `docs-html` a cada documento gerado. Gerado por `docs-init`
+# em Precificação — daqui para a frente, editável à mão.
+#
+# Duas regras que valem para o arquivo inteiro:
+#   · caminho é sempre relativo à RAIZ do projeto (onde este arquivo está);
+#   · campo vazio tem comportamento definido — está dito em cada um. Nenhum
+#     deles quebra a geração.
+#
+# Depois de editar, gere de novo:
+#   python ~/.claude/skills/docs-html/scripts/aplicar_marca.py docs/<assunto> --raiz=.
+# ============================================================================
+
+projeto:
+  # Nome que aparece no cabeçalho, no <title> e na assinatura do rodapé.
+  nome: "Plataforma de Precificação de Seminovos"
+  # Segunda linha do cabeçalho, sob o nome. Vazio = só o nome.
+  subtitulo: "KINTO · SDP #5211"
+  # Área responsável — entra na assinatura do rodapé, ao lado do cargo.
+  area: "Precificação"
+  # Vai para a ficha do Front Matter. Use o vocabulário da sua empresa.
+  classificacao: "Interno"       # Público · Interno · Restrito · Confidencial
+
+logo:
+  # O logo do PROJETO, sempre. Os placeholders da skill (que se anunciam como
+  # placeholder) só entram quando o caminho está vazio ou não existe — e o
+  # aviso sai no relatório da geração, nunca em silêncio.
+  # Aceita .svg, .png, .webp e .jpg; a extensão é preservada na cópia.
+  # Só existe um emblema no projeto (o mesmo arquivo em frontend/public e
+  # html/assets); ele serve aos dois temas. Se algum dia houver versão branca,
+  # aponte `escuro` para ela.
+  claro: "html/assets/logo-kinto-emblem.png"    # usado no tema CLARO (logo escuro, sobre papel)
+  escuro: "html/assets/logo-kinto-emblem.png"   # usado no tema ESCURO (logo claro, sobre fundo escuro)
+  # Texto alternativo das duas imagens — o que um leitor de tela anuncia.
+  alt: "KINTO"
+
+marca:
+  # A cor da marca, em hex. Vira `assets/brand.css`, carregado DEPOIS do
+  # design system: é o único lugar onde a cor do projeto é definida, e mexer
+  # aqui repinta tudo (links, selos, gráficos, o círculo do avatar).
+  # Valores canônicos do design system KINTO/NFMS — os mesmos de
+  # `html/css/tokens.css` (--kinto-primary / --kinto-primary-escuro). A cor
+  # amostrada do emblema (#006078) foi descartada em favor destes.
+  claro:                           # sobre papel — precisa de contraste ≥ 4,5:1 com o branco
+    brand: "#00708D"   # --kinto-primary
+    hover: "#00384A"   # --kinto-primary-escuro · links e botões sob o cursor
+    tint:  "#E5F0F3"   # fundo de callout, selo e realce
+  escuro:                          # sobre fundo escuro — some se for escura demais
+    brand: "#59A2B4"
+    hover: "#8CBECB"
+    tint:  "#002731"
+
+textos:
+  # Linha fixa no alto de toda página. Vazio = o cabeçalho mostra só projeto e
+  # subtítulo.
+  cabecalho: ""
+  # Última linha do rodapé, em todas as páginas. Aceita {ano} e {data},
+  # trocados na hora da geração — evita documento com ano congelado.
+  rodape: "KINTO · SDP #5211 · {ano} · uso interno"
+
+autoria:
+  # Nome que assina o documento, no rodapé e na ficha do Front Matter.
+  autor: ""
+  # Aparece sob o nome, junto com a área: "Cargo · Projeto".
+  cargo: ""
+  # Foto do autor no selo do rodapé: 48px, redonda, recortada no centro.
+  # Vazio = o selo mostra as iniciais do nome (duas letras).
+  avatar: ""
+  # Quem aprova. Entra na ficha do Front Matter; vazio vira "—".
+  revisor: ""
+
+contato:
+  # Bloco de contato à direita da assinatura. Vazio = a linha some.
+  email: ""
+  site: ""
+
+tipografia:
+  # true  → Inter e JetBrains Mono, do Google Fonts (precisa de internet).
+  # false → system-ui e a monoespaçada do sistema. Use em documento que vá por
+  #         e-mail ou rode offline: a página continua correta, muda a fonte.
+  fontes_externas: true
+
+saida:
+  # Onde os conjuntos de documentos são criados por padrão. Serve de sugestão
+  # a quem gera; o comando aceita qualquer caminho.
+  pasta: "docs"

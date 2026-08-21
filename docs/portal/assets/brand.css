@@ -1,0 +1,27 @@
+/* Marca do projeto — gerado de .docs-brand.yml. Não editar à mão:
+   mexa no YAML e rode a skill de novo. Carregar DEPOIS de docs.css. */
+:root, :root[data-theme="light"] {
+  --brand:       #00708D;
+  --brand-rgb:   0,112,141;
+  --brand-hover: #00384A;
+  --brand-tint:  #E5F0F3;
+}
+:root[data-theme="dark"] {
+  --brand:       #59A2B4;
+  --brand-rgb:   89,162,180;
+  --brand-hover: #8CBECB;
+  --brand-tint:  #002731;
+}
+
+/* A folha impressa é sempre clara — inclusive quando o leitor está no tema
+   escuro na hora do Ctrl+P. O docs.css já força os tokens de superfície, mas
+   este arquivo é carregado DEPOIS dele: sem repetir a marca aqui, o azul
+   luminoso do tema escuro sairia sobre papel branco, com contraste de nada. */
+@media print {
+  :root, :root[data-theme="light"], :root[data-theme="dark"] {
+    --brand:       #00708D;
+    --brand-rgb:   0,112,141;
+    --brand-hover: #00384A;
+    --brand-tint:  #E5F0F3;
+  }
+}
