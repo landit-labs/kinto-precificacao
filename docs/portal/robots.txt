@@ -1,0 +1,8 @@
+# O portal do SDP #5211 fica em repositório público e, portanto, sem senha:
+# quem tiver o link entra. O que este arquivo faz é mantê-lo FORA das buscas.
+#
+# Não confunda com controle de acesso. Para restringir de verdade seria
+# preciso repositório privado com Pages privado (plano pago) ou outro host.
+
+User-agent: *
+Disallow: /

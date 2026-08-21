@@ -1,0 +1,162 @@
+# Publica o portal do SDP #5211 no GitHub Pages.
+#
+# O site é MONTADO aqui, arquivo por arquivo — nada vai ao ar por acidente.
+# Só entra no `_site` o que estiver escrito neste workflow.
+#
+# Estrutura publicada:
+#   /                        portal (docs/portal)
+#   /painel/                 painel HTML puro (html/)
+#   /requisitos/             especificação SDP #5211
+#   /relatorios/testes.html  relatório da suíte E2E
+#   /relatorios/seguranca.html
+#   /evidencias/             capturas citadas pelos relatórios (../evidencias/)
+#
+# O frontend React (frontend/) NÃO é publicado: ele depende da API FastAPI em
+# runtime (frontend/src/api/client.ts) e ficaria vazio num site estático. O
+# painel em html/ é o espelho 1:1 dessa tela, com snapshot dos dados.
+
+name: GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/portal/**'
+      - 'html/**'
+      - '5211-requisitos.html'
+      - 'e2e/relatorio/**'
+      - 'e2e/evidencias/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Uma publicação por vez; não cancela a que já está no ar.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Montar o site
+        run: |
+          set -euo pipefail
+          mkdir -p _site/painel _site/requisitos _site/relatorios _site/evidencias
+
+          # Portal: capa, front matter e assets do design system.
+          cp -r docs/portal/. _site/
+          rm -f _site/robots.txt.exemplo
+
+          # Painel HTML puro (sem build, dados em js/dados.js).
+          cp -r html/. _site/painel/
+          rm -f _site/painel/abrir.bat _site/painel/gerar-dados.ps1
+
+          # Especificação do chamado.
+          cp 5211-requisitos.html _site/requisitos/index.html
+
+          # Relatórios E2E. Ficam um nível abaixo da raiz para que o
+          # `../evidencias/` que já existe dentro deles resolva em /evidencias/.
+          cp e2e/relatorio/testes.html    _site/relatorios/testes.html
+          cp e2e/relatorio/relatorio.html _site/relatorios/seguranca.html
+          cp -r e2e/evidencias/. _site/evidencias/
+
+          # Sem processamento Jekyll.
+          touch _site/.nojekyll
+
+      - name: Impedir indexação por buscadores
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          META = '<meta name="robots" content="noindex, nofollow">'
+          alterados = 0
+
+          for pagina in Path('_site').rglob('*.html'):
+              texto = pagina.read_text(encoding='utf-8')
+              if 'name="robots"' in texto:
+                  continue
+              # No fim do <head>: não empurra o <meta charset> para longe do
+              # início do documento, que é onde o navegador o procura.
+              i = texto.lower().find('</head>')
+              if i == -1:
+                  print(f'  sem </head>, ignorado: {pagina}')
+                  continue
+              pagina.write_text(texto[:i] + META + '\n' + texto[i:], encoding='utf-8')
+              alterados += 1
+
+          print(f'noindex aplicado em {alterados} página(s)')
+          PY
+
+      - name: Conferir o que foi montado
+        run: |
+          set -euo pipefail
+          # Um link quebrado aqui só aparece em produção — falhe antes disso.
+          for arquivo in \
+            _site/index.html \
+            _site/front-matter.html \
+            _site/robots.txt \
+            _site/painel/index.html \
+            _site/painel/js/dados.js \
+            _site/requisitos/index.html \
+            _site/relatorios/testes.html \
+            _site/relatorios/seguranca.html \
+            _site/evidencias/jornada-a-painel.png
+          do
+            test -f "$arquivo" || { echo "FALTOU: $arquivo"; exit 1; }
+          done
+          # Todo link e imagem interna precisa resolver dentro do _site.
+          python3 - <<'PY'
+          import re, sys
+          from pathlib import Path
+          from urllib.parse import urldefrag, unquote
+
+          raiz = Path('_site')
+          problemas = []
+
+          for pagina in sorted(raiz.rglob('*.html')):
+              texto = pagina.read_text(encoding='utf-8')
+              ids = set(re.findall(r'id="([^"]+)"', texto))
+              for alvo in re.findall(r'(?:href|src)="([^"]+)"', texto):
+                  if alvo.startswith(('http', 'mailto:', 'data:', '#!', 'javascript:')):
+                      continue
+                  caminho, frag = urldefrag(alvo)
+                  if not caminho:                      # âncora na própria página
+                      if frag and frag not in ids:
+                          problemas.append(f'{pagina}: âncora #{frag} não existe')
+                      continue
+                  destino = (pagina.parent / unquote(caminho)).resolve()
+                  if destino.is_dir():
+                      destino = destino / 'index.html'
+                  if not destino.exists():
+                      problemas.append(f'{pagina}: {alvo} → não existe')
+
+          if problemas:
+              print('\n'.join(problemas))
+              sys.exit(1)
+          print('nenhum link ou âncora quebrada')
+          PY
+
+          echo "--- árvore publicada ---"
+          find _site -maxdepth 2 -not -path '*/assets/*' | sort
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

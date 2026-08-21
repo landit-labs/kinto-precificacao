@@ -26,7 +26,17 @@
     color: var(--tinta);
     font-size: 10.5px;
     line-height: 1.55;
-    margin: 0;
+    /* Na tela o texto precisa de respiro e de uma medida legível; na
+       impressão quem dá a margem é a própria página (ver @media print). */
+    margin: 0 auto;
+    max-width: 1180px;
+    padding: 32px 40px 48px;
+  }
+  @media (max-width: 700px) {
+    body { padding: 20px 16px 32px; }
+  }
+  @media print {
+    body { max-width: none; padding: 0; }
   }
   header.capa { border-bottom: 3px solid var(--teal); padding-bottom: 14px; margin-bottom: 18px; }
   .marca { color: var(--teal); font-weight: 700; letter-spacing: 0.12em; font-size: 10px; text-transform: uppercase; }
