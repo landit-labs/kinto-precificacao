@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <!--
+      Versão HTML pura (HTML + CSS + JS, sem build e sem servidor) do painel
+      Plate-by-Plate Pricing — SDP #5211. Abre por duplo clique (file://).
+
+      Fonte da verdade continua sendo frontend/ (React + Vite) e backend/
+      (FastAPI). Esta pasta é um espelho para demonstração e distribuição:
+        - css/tokens.css e css/app.css são CÓPIAS de frontend/src;
+        - js/dados.js é um SNAPSHOT dos endpoints da API (html/gerar-dados.ps1);
+        - js/app.js reproduz o comportamento dos componentes React.
+      Ver html/README.md.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <title>Plate-by-Plate Pricing · Pricing | NFMS Admin</title>
+  </head>
+  <body>
+    <div class="app-wrapper" id="app-wrapper">
+      <header class="header-main">
+        <div class="topbar-marca">
+          <span class="topbar-emblem">
+            <img src="assets/logo-kinto-emblem.png" alt="KINTO" />
+          </span>
+          <h4 class="topbar-titulo">
+            Pricing · <span>Plate-by-Plate Pricing</span>
+          </h4>
+        </div>
+      </header>
+
+      <nav aria-label="Trilha de navegação">
+        <ul class="app-breadcrumbs">
+          <li>Pricing</li>
+          <li>Used Vehicles</li>
+          <li class="active" aria-current="page">Plate-by-Plate Pricing</li>
+        </ul>
+      </nav>
+
+      <div class="app-content">
+        <main class="container-fluid">
+          <div id="area-kpis"></div>
+          <div id="area-graficos"></div>
+          <div id="area-filtros"></div>
+          <section aria-label="Inventário de veículos" id="area-inventario"></section>
+        </main>
+      </div>
+
+      <footer class="footer-container">
+        <p>Copyright © 2026 KINTO Brasil · NFMS Admin. All rights reserved.</p>
+      </footer>
+    </div>
+
+    <script src="js/dados.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
